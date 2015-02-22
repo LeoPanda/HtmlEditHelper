@@ -9,6 +9,7 @@ import com.google.gwt.xml.client.XMLParser;
 import jp.leopanda.htmlEditHelper.enums.Error;
 import jp.leopanda.htmlEditHelper.filedParts.ListBoxField;
 import jp.leopanda.htmlEditHelper.filedParts.TextBoxField;
+import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
 import jp.leopanda.htmlEditHelper.validate.NumericValidator;
 import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
 import jp.leopanda.htmlEditHelper.validate.ValidateBase;

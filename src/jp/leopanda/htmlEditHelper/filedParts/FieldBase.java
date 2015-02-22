@@ -21,7 +21,7 @@ public abstract class FieldBase<T extends FocusWidget> extends HorizontalPanel i
 	private final String DEFAULT_STYLE = "FieldBase";	//デフォルトのCSSスタイル名
 	private Label label;								//ラベル
 	private String styleName;							//スタイル名
-	private ValidateBase[] validates;						//validateインスタンスの配列
+	private ValidateBase[] validates;					//validateインスタンスの配列
 	protected Error err = Error.NOTHING;				//フィールドのエラー状態
 	protected String errMsg = Error.NOTHING.getMsg();	//フィールドのエラーメッセージ
 	protected T inputter_; 								//入力部品の総称クラス
@@ -139,9 +139,9 @@ public abstract class FieldBase<T extends FocusWidget> extends HorizontalPanel i
 		if(validates == null){
 			return true;
 		}
-		for(Validate validate:validates){
-			if(!validate.validate(getText())){
-				setErr(validate.getError(),validate.getErrMsg());
+		for(Validate validator:validates){
+			if(!validator.validate(getText())){
+				setErr(validator.getError(),validator.getErrMsg());
 				return false;
 			}
 		}

@@ -7,6 +7,8 @@ import com.google.gwt.core.client.GWT;
 
 import jp.leopanda.htmlEditHelper.filedParts.ListBoxField;
 import jp.leopanda.htmlEditHelper.filedParts.TextAreaField;
+import jp.leopanda.htmlEditHelper.panelParts.IncrementalWrapper;
+import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
 import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
 import jp.leopanda.htmlEditHelper.validate.ValidateBase;
 
@@ -28,7 +30,7 @@ public class SyntaxHilighterHelper extends PanelBase {
 	private TextAreaField src 
 			= new TextAreaField("src", "ソース:", new ValidateBase[] {isRequired});
 	private OptionGroup optionGroup = new OptionGroup();
-	private IncrementalWrapper optionPanel = new IncrementalWrapper(optionGroup, fieldMap);
+	private IncrementalWrapper optionPanel;		//可変パネル化ラッパー
 	/*
 	 * コンストラクタ
 	 */
@@ -36,6 +38,8 @@ public class SyntaxHilighterHelper extends PanelBase {
 		super();
 		setFieldMap();
 		setPanel();
+		//初期値
+		brush.setText("java");
 	}
 	/*
 	 * フィールドマップの作成
@@ -43,8 +47,8 @@ public class SyntaxHilighterHelper extends PanelBase {
 	private void setFieldMap(){
 		fieldMap.add(brush);
 		fieldMap.add(css);
+		optionPanel = new IncrementalWrapper(optionGroup, fieldMap);
 		fieldMap.add(src);
-		fieldMap.add(optionGroup);
 	}
 	/*
 	 * 入力パネルの構成

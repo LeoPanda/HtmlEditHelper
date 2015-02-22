@@ -6,6 +6,7 @@ import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
 import jp.leopanda.htmlEditHelper.filedParts.TextAreaField;
+import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
 import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
 import jp.leopanda.htmlEditHelper.validate.ValidateBase;
 /**

@@ -1,4 +1,6 @@
 package jp.leopanda.htmlEditHelper.client;
+import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -135,14 +137,12 @@ public class HtmlEditHelper implements EntryPoint {
 				@Override
 				public void onClick(ClickEvent event) {
 					//タブパネル内入力パネルの入力妥当性をチェックしHTMLを生成する。
-					String html = "";
 					int index = tabPanel.getTabBar().getSelectedTab();
 					PanelBase panel =  Panels.values()[index].panel;
 					if(panel.validateFields()){ 
-						html = panel.getGeneratedHtml();
+						generatedHTMLArea.setText(panel.getGeneratedHtml());
+						showPreview();
  					}
-					generatedHTMLArea.setText(html);
-					showPreview();
 				}
 			});
 		}

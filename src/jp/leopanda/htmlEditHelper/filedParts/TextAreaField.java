@@ -3,7 +3,11 @@ package jp.leopanda.htmlEditHelper.filedParts;
 import jp.leopanda.htmlEditHelper.validate.ValidateBase;
 
 import com.google.gwt.user.client.ui.TextArea;
-
+/**
+ * テキストエリア入力フィールドを作成するクラス
+ * @author LeoPanda
+ *
+ */
 public class TextAreaField extends FieldBase<TextArea> implements FieldCommon{
 	/**
 	 * コンストラクタ

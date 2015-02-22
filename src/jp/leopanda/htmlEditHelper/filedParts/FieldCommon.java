@@ -2,7 +2,11 @@ package jp.leopanda.htmlEditHelper.filedParts;
 
 
 import jp.leopanda.htmlEditHelper.enums.Error;
-
+/**
+ * 入力フィールド共通インターフェース
+ * @author LeoPanda
+ *
+ */
 public interface FieldCommon {
 	/*
 	 * 入力値のgetter

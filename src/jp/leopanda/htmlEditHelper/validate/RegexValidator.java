@@ -1,7 +1,5 @@
 package jp.leopanda.htmlEditHelper.validate;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jp.leopanda.htmlEditHelper.enums.Error;
 /**
