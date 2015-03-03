@@ -6,8 +6,10 @@ import jp.leopanda.htmlEditHelper.enums.Error;
 import jp.leopanda.htmlEditHelper.filedParts.FieldCommon;
 
 public interface GroupValidate {
-	boolean validate(List<FieldCommon> fieldList );
-	Error getError();
-	String getErrMsg();
+  boolean validate(List<FieldCommon> fieldList);
+
+  Error getError();
+
+  String getErrMsg();
 
 }
