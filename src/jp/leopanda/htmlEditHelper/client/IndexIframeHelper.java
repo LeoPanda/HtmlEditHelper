@@ -111,9 +111,9 @@ class IndexIframeHelper extends PanelBase {
    * HTMLを生成する
    */
   public String getGeneratedHtml() {
-    String html = "";
+    String html = "<br/><br/>";
     if (title.getText().length() > 0) {
-      html += getTitleDom();
+      html += getTitleDom(title.getText());
     }
     html += getIframeDom();
     return html;
@@ -122,10 +122,10 @@ class IndexIframeHelper extends PanelBase {
   /*
    * タイトルのHTMLを生成する
    */
-  private String getTitleDom() {
+  private String getTitleDom(String titleText) {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("style", "font-size: 80%; font-weight: 600;");
-    return getDomString("div", attributes);
+    return getDomString("div", attributes,titleText);
   }
 
   /*
@@ -135,7 +135,7 @@ class IndexIframeHelper extends PanelBase {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("src", getAppURL());
     attributes.put("style", getIframeStyle());
-    return getDomString("iframe", attributes);
+    return getDomString("iframe", attributes,"");
   }
 
   /*
@@ -175,11 +175,12 @@ class IndexIframeHelper extends PanelBase {
   /*
    * HTML Dom elementを生成する。
    */
-  private String getDomString(String elementName, Map<String, String> attributes) {
+  private String getDomString(String elementName, Map<String, String> attributes,String childText) {
     Element element = XMLParser.createDocument().createElement(elementName);
     for (Map.Entry<String, String> attribute : attributes.entrySet()) {
       element.setAttribute(attribute.getKey(), attribute.getValue());
     }
+    element.appendChild(XMLParser.createDocument().createTextNode(childText));
     return element.toString().replaceAll("&amp;", "&");
   }
 
