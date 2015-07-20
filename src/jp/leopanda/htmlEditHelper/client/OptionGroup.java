@@ -3,14 +3,14 @@ package jp.leopanda.htmlEditHelper.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.leopanda.htmlEditHelper.filedParts.EventAction;
-import jp.leopanda.htmlEditHelper.filedParts.FieldGroup;
-import jp.leopanda.htmlEditHelper.filedParts.ListBoxField;
-import jp.leopanda.htmlEditHelper.filedParts.TextBoxField;
-import jp.leopanda.htmlEditHelper.validate.NumericValidator;
-import jp.leopanda.htmlEditHelper.validate.RegexValidator;
-import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
-import jp.leopanda.htmlEditHelper.validate.ValidateBase;
+import jp.leopanda.panelFrame.filedParts.EventAction;
+import jp.leopanda.panelFrame.filedParts.FieldGroup;
+import jp.leopanda.panelFrame.filedParts.ListBoxField;
+import jp.leopanda.panelFrame.filedParts.TextBoxField;
+import jp.leopanda.panelFrame.validate.NumericValidator;
+import jp.leopanda.panelFrame.validate.RegexValidator;
+import jp.leopanda.panelFrame.validate.RequiredValidator;
+import jp.leopanda.panelFrame.validate.ValidateBase;
 
 /**
  * SyntaxHilighterオプション値の入力パネルを生成するクラス （オプション選択リスト）と（オプション値入力）の ２つの入力フィールドのペア
@@ -26,13 +26,10 @@ public class OptionGroup extends FieldGroup implements Cloneable {
   // オプション値フィールドの種類
   private enum FieldType {
     CHAR(1), NUMERIC(2), NUMLIST(3), BOOLEANS(4);
-
     private int val;
-
     private FieldType(int val) {
       this.val = val;
     }
-
     public String getVal() {
       return String.valueOf(val);
     }
@@ -59,6 +56,7 @@ public class OptionGroup extends FieldGroup implements Cloneable {
 
   /*
    * オプション選択リストのセットアップ
+   * リストから選択されたオプションに応じた入力値フィールドを生成する。
    */
   private void setUpSelector() {
     this.add(selector);

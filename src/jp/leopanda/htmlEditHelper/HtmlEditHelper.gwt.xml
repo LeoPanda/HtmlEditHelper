@@ -19,6 +19,7 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  <inherits name='jp.leopanda.panelFrame.panelFrame'/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='jp.leopanda.htmlEditHelper.client.HtmlEditHelper'/>

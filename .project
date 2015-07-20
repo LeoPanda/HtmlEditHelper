@@ -48,4 +48,16 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>panelFrame</name>
+			<type>2</type>
+			<location>/Users/sakyo/Documents/workspace/panelFrame</location>
+		</link>
+		<link>
+			<name>srcPanelFrame</name>
+			<type>2</type>
+			<location>/Users/sakyo/Documents/workspace/panelFrame/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -6,13 +6,12 @@ import java.util.Map;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
-import jp.leopanda.htmlEditHelper.enums.Error;
-import jp.leopanda.htmlEditHelper.filedParts.ListBoxField;
-import jp.leopanda.htmlEditHelper.filedParts.TextBoxField;
-import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
-import jp.leopanda.htmlEditHelper.validate.NumericValidator;
-import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
-import jp.leopanda.htmlEditHelper.validate.ValidateBase;
+import jp.leopanda.panelFrame.enums.Error;
+import jp.leopanda.panelFrame.filedParts.ListBoxField;
+import jp.leopanda.panelFrame.filedParts.TextBoxField;
+import jp.leopanda.panelFrame.validate.NumericValidator;
+import jp.leopanda.panelFrame.validate.RequiredValidator;
+import jp.leopanda.panelFrame.validate.ValidateBase;
 
 /**
  * Blogger用索引をiframeに埋め込むHTMLを生成する
@@ -20,7 +19,7 @@ import jp.leopanda.htmlEditHelper.validate.ValidateBase;
  * @author LeoPanda
  *
  */
-class IndexIframeHelper extends PanelBase {
+class IndexIframeHelper extends FunctionPanelBase {
   private final String APP_NAME = "http://2.optimal-spark-439.appspot.com/"; // iframeに入れるアプリ名
   private final int FRAME_MARGINE = 11; // iframeの上部マージン
   private final int MULTIPLI = 127; // iframeの高さ１行あたりの乗算定数
