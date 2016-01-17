@@ -1,7 +1,5 @@
 package jp.leopanda.htmlEditHelper.client;
 
-import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -31,17 +29,17 @@ public class HtmlEditHelper implements EntryPoint {
         "SyntaxHilighter", PreviewType.Window), 
     SlideShow(new SlideShow(), 
         "スライドショー", PreviewType.Window);
-    private PanelBase panel;
+    private FunctionPanelBase panel;
     private String title;
     private PreviewType previewType;
 
-    Panels(PanelBase panel, String title, PreviewType previewType) {
+    Panels(FunctionPanelBase panel, String title, PreviewType previewType) {
       this.panel = panel;
       this.title = title;
       this.previewType = previewType;
     }
 
-    public PanelBase getPanel() {
+    public FunctionPanelBase getPanel() {
       return this.panel;
     }
 
@@ -164,7 +162,7 @@ public class HtmlEditHelper implements EntryPoint {
         public void onClick(ClickEvent event) {
           // タブパネル内入力パネルの入力妥当性をチェックしHTMLを生成する。
           int index = tabPanel.getTabBar().getSelectedTab();
-          PanelBase panel = Panels.values()[index].panel;
+          FunctionPanelBase panel = Panels.values()[index].panel;
           if (panel.validateFields()) {
             generatedHTMLArea.setText(panel.getGeneratedHtml());
             showPreview();

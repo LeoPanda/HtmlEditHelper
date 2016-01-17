@@ -5,12 +5,11 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 
-import jp.leopanda.htmlEditHelper.filedParts.ListBoxField;
-import jp.leopanda.htmlEditHelper.filedParts.TextAreaField;
-import jp.leopanda.htmlEditHelper.panelParts.IncrementalWrapper;
-import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
-import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
-import jp.leopanda.htmlEditHelper.validate.ValidateBase;
+import jp.leopanda.panelFrame.filedParts.ListBoxField;
+import jp.leopanda.panelFrame.filedParts.TextAreaField;
+import jp.leopanda.panelFrame.panelParts.IncrementalWrapper;
+import jp.leopanda.panelFrame.validate.RequiredValidator;
+import jp.leopanda.panelFrame.validate.ValidateBase;
 
 /**
  * Syntaxhilighterの埋め込みHTML生成用　入力パネル
@@ -18,7 +17,7 @@ import jp.leopanda.htmlEditHelper.validate.ValidateBase;
  * @author LeoPanda
  *
  */
-public class SyntaxHilighterHelper extends PanelBase {
+public class SyntaxHilighterHelper extends FunctionPanelBase {
   // 固定文字列
   private final String HOST_URL = GWT.getHostPageBaseURL();
   // バリデータ

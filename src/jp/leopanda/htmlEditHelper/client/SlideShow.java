@@ -4,10 +4,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
-import jp.leopanda.htmlEditHelper.filedParts.TextAreaField;
-import jp.leopanda.htmlEditHelper.panelParts.PanelBase;
-import jp.leopanda.htmlEditHelper.validate.RequiredValidator;
-import jp.leopanda.htmlEditHelper.validate.ValidateBase;
+import jp.leopanda.panelFrame.filedParts.TextAreaField;
+import jp.leopanda.panelFrame.validate.RequiredValidator;
+import jp.leopanda.panelFrame.validate.ValidateBase;
 
 /**
  * ブログ画像をスライドショーにまとめる
@@ -15,7 +14,7 @@ import jp.leopanda.htmlEditHelper.validate.ValidateBase;
  * @author LeoPanda
  *
  */
-public class SlideShow extends PanelBase {
+public class SlideShow extends FunctionPanelBase {
   // 固定文字列
   private final String HOST_URL = GWT.getHostPageBaseURL();
   // バリデータ
