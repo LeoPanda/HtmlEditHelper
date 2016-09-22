@@ -28,7 +28,9 @@ public class HtmlEditHelper implements EntryPoint {
     SyntaxHilighterHelper(new SyntaxHilighterHelper(), 
         "SyntaxHilighter", PreviewType.Window), 
     SlideShow(new SlideShow(), 
-        "スライドショー", PreviewType.Window);
+        "スライドショー", PreviewType.Window),
+    PhotoLayout(new PhotoLayout(), 
+        "写真のレイアウト配置", PreviewType.Panel);
     private FunctionPanelBase panel;
     private String title;
     private PreviewType previewType;
