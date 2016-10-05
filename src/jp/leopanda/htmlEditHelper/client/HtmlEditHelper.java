@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */

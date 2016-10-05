@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
+import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
 import jp.leopanda.panelFrame.enums.Error;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;

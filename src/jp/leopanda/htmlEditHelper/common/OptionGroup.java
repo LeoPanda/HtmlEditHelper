@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.client;
+package jp.leopanda.htmlEditHelper.common;
 
 import java.util.HashMap;
 import java.util.Map;
