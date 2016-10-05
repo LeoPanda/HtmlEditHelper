@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
+import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.validate.RequiredValidator;
 import jp.leopanda.panelFrame.validate.ValidateBase;

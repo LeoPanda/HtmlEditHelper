@@ -26,10 +26,7 @@
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
-  <source path='filedParts'/>
-  <source path='panelParts'/>
-  <source path='enums'/>
-  <source path='validate'/>
+  <source path='common'/>
   
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>

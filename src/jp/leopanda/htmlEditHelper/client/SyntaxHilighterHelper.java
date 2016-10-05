@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 
+import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.common.OptionGroup;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.panelParts.IncrementalWrapper;
