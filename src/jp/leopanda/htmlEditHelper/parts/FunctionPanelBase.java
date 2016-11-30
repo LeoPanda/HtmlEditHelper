@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.common;
+package jp.leopanda.htmlEditHelper.parts;
 
 import jp.leopanda.panelFrame.panelParts.PanelBase;
 

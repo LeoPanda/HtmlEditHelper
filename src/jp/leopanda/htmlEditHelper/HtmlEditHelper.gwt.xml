@@ -26,7 +26,7 @@
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
-  <source path='common'/>
+  <source path='parts'/>
   
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
