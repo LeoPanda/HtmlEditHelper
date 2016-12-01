@@ -129,4 +129,5 @@ public class GridLayoutor {
      */
     public abstract float cellProcess(int cellIndex);
   }
+
 }

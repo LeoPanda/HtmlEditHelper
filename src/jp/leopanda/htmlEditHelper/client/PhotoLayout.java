@@ -6,6 +6,8 @@ import com.google.gwt.regexp.shared.RegExp;
 import jp.leopanda.htmlEditHelper.parts.LayoutCalc;
 import jp.leopanda.htmlEditHelper.parts.LayoutType;
 import jp.leopanda.htmlEditHelper.parts.LayoutVariables;
+import jp.leopanda.htmlEditHelper.parts.Error;
+import jp.leopanda.htmlEditHelper.parts.ErrorListener;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.EventAction;
@@ -108,6 +110,14 @@ public class PhotoLayout extends FunctionPanelBase {
    */
   @Override
   public String getGeneratedHtml() {
+    layoutCalc.setErrorListener(new ErrorListener() {
+      @Override
+      //レイアウト生成時のエラーハンドリング
+      public void onError(Error error, String text) {
+        sourceHtml.setErr(jp.leopanda.panelFrame.enums.Error.NOMESSAGE, error.text + text);
+        sourceHtml.popError();
+      }
+    });
     layoutCalc.setVariables(
         variables.setVariables(LayoutType.values()[layoutSelector.getSelectedIndex()],
             Integer.valueOf(xIndent.getText()),

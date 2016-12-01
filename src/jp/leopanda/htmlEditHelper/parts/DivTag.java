@@ -18,6 +18,7 @@ public class DivTag {
   private float marginLeft = 0;
   private String imgSrc = "";
   private float aspectRatio = 0;
+  private ErrorListener errorListener;
 
   /**
    * コンストラクタ
@@ -36,18 +37,35 @@ public class DivTag {
    * @param divElement HTMLソース中のDIVタグのエレメント
    * @param textAlign imgなしDIVの場合の左マージン
    */
-  public DivTag(Element divElement,float textAlign){
+  public DivTag(Element divElement,float textAlign,ErrorListener errorListener){
+    this.errorListener = errorListener;
     NodeList<Element> childImgNode = divElement.getElementsByTagName(TagName.Img.text);
     if (childImgNode.getLength() > 0) {
-      this.imgSrc = childImgNode.getItem(0).getAttribute(AttributeName.Src.text);
-      this.width = Integer.valueOf(childImgNode.getItem(0).getAttribute(AttributeName.Width.text));
-      this.height = Integer.valueOf(childImgNode.getItem(0).getAttribute(AttributeName.Height.text));
+      Element imgElement = childImgNode.getItem(0); 
+      this.imgSrc = imgElement.getAttribute(AttributeName.Src.text);
+      this.width = getNumericAttribute(imgElement,AttributeName.Width);
+      this.height = getNumericAttribute(imgElement,AttributeName.Height);
       this.aspectRatio = (float)width/(float)height;
     }else{
       this.marginLeft = textAlign;      
     }
   }
-
+  //エレメントから数値属性を取得する
+  private float getNumericAttribute(Element element,AttributeName attributeName){
+    String attribute =element.getAttribute(attributeName.text);
+    String errorText = "<img>の"+attributeName.text;
+    if(attribute.isEmpty()){
+      errorListener.onError(Error.NO_ATTRIBUTE,errorText);
+      return 0;
+    }
+    float retValue = 0;
+    try {
+      retValue = Float.valueOf(attribute);
+    } catch (NumberFormatException exception) {
+      errorListener.onError(Error.NOT_NUMERIC_ATTRIBUTE, errorText);
+    }
+    return retValue;
+  }
 
   public float getWidth() {
     return width;

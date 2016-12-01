@@ -22,6 +22,11 @@ public class LayoutCalc {
   private String generateClassName;// 変更後生成クラス名
   private LayoutVariables variables; // パネルから入力される可変変数
 
+  private ErrorListener errorListener;
+  private String errorString;
+  public void setErrorListener(ErrorListener errorListener) {
+    this.errorListener = errorListener;
+  }
   /**
    * コンストラクタ
    * 
@@ -60,9 +65,19 @@ public class LayoutCalc {
   // ソースHTMLをDIV配列へ変換する
   private DivTag[] getDivElements(NodeList<Element> sourceNode) {
     DivTag divTags[] = new DivTag[sourceNode.getLength()];
+    errorString = "";
     for (int i = 0; i < sourceNode.getLength(); i++) {
+      final int refIndex = i;
       Element divElement = sourceNode.getItem(i);
-      divTags[i] = new DivTag(divElement, textAlign);
+      divTags[i] = new DivTag(divElement, textAlign, new ErrorListener() {
+        @Override
+        public void onError(Error error, String text) {
+          errorString += String.valueOf(refIndex + 1) + "番目の<div>:" + text + error.text + "\n";
+        }
+      });
+    }
+    if(errorString.length()>0){
+      errorListener.onError(Error.DIVTAG_GETERROR, "\n" + errorString);
     }
     return divTags;
   }
