@@ -1,5 +1,6 @@
 package jp.leopanda.htmlEditHelper.client;
 
+import com.google.gwt.aria.client.OrientationValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
@@ -9,8 +10,8 @@ import jp.leopanda.htmlEditHelper.parts.LayoutVariables;
 import jp.leopanda.htmlEditHelper.parts.Error;
 import jp.leopanda.htmlEditHelper.parts.ErrorListener;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
-import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.EventAction;
+import jp.leopanda.panelFrame.filedParts.ImageRadioButtonField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;
 import jp.leopanda.panelFrame.validate.IntegerValidator;
@@ -44,8 +45,9 @@ public class PhotoLayout extends FunctionPanelBase {
   // フィールド
   private TextAreaField sourceHtml = new TextAreaField("sourceHtml", "ソースHTML:",
       new ValidateBase[] { isRequired });
-  private ListBoxField layoutSelector = new ListBoxField("layoutSelector", "レイアウトの種類", null,
-      LayoutType.values());
+  private ImageRadioButtonField layoutSelector = new ImageRadioButtonField("layoutSelector",
+      "レイアウトの種類", "layoutSelector", LayoutType.values(), OrientationValue.HORIZONTAL);
+
   private TextBoxField maxCols = new TextBoxField("indent", "カラム数",
       new ValidateBase[] { isRequired, isInteger });
   private TextBoxField xIndent = new TextBoxField("indent", "横インデント(" + PIC_UNIT + ")",
@@ -97,7 +99,7 @@ public class PhotoLayout extends FunctionPanelBase {
 
   // layoutType変更時の処理
   private void onLayoutTypeChange() {
-    if (layoutSelector.getText() == LayoutType.Grid.getName()) {
+    if (layoutSelector.getText() == LayoutType.GRID.getName()) {
       maxCols.setVisible(true);
     } else {
       maxCols.setText(String.valueOf(intMaxCols));
@@ -112,7 +114,7 @@ public class PhotoLayout extends FunctionPanelBase {
   public String getGeneratedHtml() {
     layoutCalc.setErrorListener(new ErrorListener() {
       @Override
-      //レイアウト生成時のエラーハンドリング
+      // レイアウト生成時のエラーハンドリング
       public void onError(Error error, String text) {
         sourceHtml.setErr(jp.leopanda.panelFrame.enums.Error.NOMESSAGE, error.text + text);
         sourceHtml.popError();

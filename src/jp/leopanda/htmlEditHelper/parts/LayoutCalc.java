@@ -57,7 +57,7 @@ public class LayoutCalc {
   public String genLayoutedSource(String source) {
     HTML sourceHtml = new HTML(source);
     NodeList<Element> sourceNode = sourceHtml.getElement()
-        .getElementsByTagName(TagName.Div.text);
+        .getElementsByTagName(TagName.DIV.text);
     updateHTMLNode(sourceNode, setLayout(getDivElements(sourceNode)));
     return sourceHtml.getHTML();
   }
@@ -85,13 +85,13 @@ public class LayoutCalc {
   // 指定された入力にしたがって各DIVのレイアウト情報を書き換える
   private DivTag[] setLayout(DivTag[] divTags) {
     switch (variables.layoutType) {
-    case Grid:
+    case GRID:
       divTags = new GridLayoutor(compleEmptyAttribute(divTags), variables).doLayout();
       break;
-    case VerticalHorizontals:
+    case VHCOMBINE:
       divTags = new CombineLayoutor(compleEmptyAttribute(divTags), variables, 0).doLayout();
       break;
-    case HorizontalsVertical:
+    case HVCOMBINE:
       divTags = new CombineLayoutor(compleEmptyAttribute(divTags), variables, divTags.length - 1)
           .doLayout();
       break;
@@ -104,23 +104,23 @@ public class LayoutCalc {
   // レイアウト情報をHTMLへ書き込む
   private void updateHTMLNode(NodeList<Element> divNode, DivTag[] divTags) {
     for (int i = 0; i < divNode.getLength(); i++) {
-      divNode.getItem(i).setAttribute(AttributeName.Class.text, generateClassName);
-      divNode.getItem(i).setAttribute(AttributeName.Style.text, getStyleAttributes(divTags[i]));
-      divNode.getItem(i).setAttribute(AttributeName.Width.text,
+      divNode.getItem(i).setAttribute(AttributeName.CLASS.text, generateClassName);
+      divNode.getItem(i).setAttribute(AttributeName.STYLE.text, getStyleAttributes(divTags[i]));
+      divNode.getItem(i).setAttribute(AttributeName.WIDTH.text,
           getNumString(divTags[i].getWidth()));
-      divNode.getItem(i).setAttribute(AttributeName.Height.text,
+      divNode.getItem(i).setAttribute(AttributeName.HEIGHT.text,
           getNumString(divTags[i].getHeight()));
-      NodeList<Element> childImgNode = divNode.getItem(i).getElementsByTagName(TagName.Img.text);
+      NodeList<Element> childImgNode = divNode.getItem(i).getElementsByTagName(TagName.IMG.text);
       if (childImgNode.getLength() > 0) {
-        childImgNode.getItem(0).setAttribute(AttributeName.Width.text,
+        childImgNode.getItem(0).setAttribute(AttributeName.WIDTH.text,
             getNumString(divTags[i].getWidth()));
-        childImgNode.getItem(0).setAttribute(AttributeName.Height.text,
+        childImgNode.getItem(0).setAttribute(AttributeName.HEIGHT.text,
             getNumString(divTags[i].getHeight()));
       }
     }
   }
 
-  // 高さと幅のエレメントが指定されていないDIVタグに情報を補完する
+  // 高さと幅のエレメントが指定されていない文字のみのDIVタグに情報を補完する
   private DivTag[] compleEmptyAttribute(DivTag[] divTags) {
     for (int i = 0; i < divTags.length; i++) {
       if (divTags[i].getWidth() == 0) {
@@ -142,22 +142,22 @@ public class LayoutCalc {
     return divTags;
   }
 
-  // DIVタグのStyleを設定する
+  // DIVタグのStyle属性を設定する
   private String getStyleAttributes(DivTag divTag) {
-    String widthElement = getStyleElement(AttributeName.Width.text, divTag.getWidth());
-    String heightElement = getStyleElement(AttributeName.Height.text, divTag.getHeight());
-    String marginLeftElement = getStyleElement(AttributeName.MarginLeft.text,
+    String widthElement = getStyleElement(AttributeName.WIDTH.text, divTag.getWidth());
+    String heightElement = getStyleElement(AttributeName.HEIGHT.text, divTag.getHeight());
+    String marginLeftElement = getStyleElement(AttributeName.MARGINLEFT.text,
         divTag.getMarginLeft());
-    String marginBottomElement = getStyleElement(AttributeName.MarginBottom.text,
+    String marginBottomElement = getStyleElement(AttributeName.MARGINBOTTOM.text,
         divTag.getMarginBottom());
     String transformElement = getTransformElement(divTag);
     return stylePrefix + widthElement + heightElement + transformElement + marginLeftElement
         + marginBottomElement;
   }
 
-  // styleの各要素を設定する
-  private String getStyleElement(String name, float value) {
-    return value == 0 ? "" : name + ":" + getNumString(value) + sizeUnit + delimiter;
+  // style属性の各要素を設定する
+  private String getStyleElement(String elementName, float value) {
+    return value == 0 ? "" : elementName + ":" + getNumString(value) + sizeUnit + delimiter;
   }
 
   // styleのトランスフォームエレメントを設定する
@@ -173,15 +173,17 @@ public class LayoutCalc {
     return transform;
   }
 
-  // 浮動小数点数値を小数点付き文字列に変換する
+  // 浮動小数点数値を文字列に変換する
   private String getNumString(float value) {
+    int decimalLength = 1;//小数点以下の桁数
+    decimalLength = (int) Math.pow(10,decimalLength);
     String retString;
     int integerPart = (int) value;
     if (value == integerPart) {
       retString = String.valueOf(integerPart);
     } else {
-      int decimalPart = (int) ((value - integerPart) * 10);
-      float formatedValue = integerPart + ((float) decimalPart / 10);
+      int decimalPart = (int) ((value - integerPart) * decimalLength);
+      float formatedValue = integerPart + ((float) decimalPart / decimalLength);
       retString = String.valueOf(formatedValue);
     }
     return retString;

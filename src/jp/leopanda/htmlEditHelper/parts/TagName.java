@@ -6,7 +6,7 @@ package jp.leopanda.htmlEditHelper.parts;
  *
  */
 enum TagName {
-  Div("div"), Img("img");
+  DIV("div"), IMG("img");
   public String text;
 
   TagName(String text) {

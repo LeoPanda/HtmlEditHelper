@@ -39,12 +39,12 @@ public class DivTag {
    */
   public DivTag(Element divElement,float textAlign,ErrorListener errorListener){
     this.errorListener = errorListener;
-    NodeList<Element> childImgNode = divElement.getElementsByTagName(TagName.Img.text);
+    NodeList<Element> childImgNode = divElement.getElementsByTagName(TagName.IMG.text);
     if (childImgNode.getLength() > 0) {
       Element imgElement = childImgNode.getItem(0); 
-      this.imgSrc = imgElement.getAttribute(AttributeName.Src.text);
-      this.width = getNumericAttribute(imgElement,AttributeName.Width);
-      this.height = getNumericAttribute(imgElement,AttributeName.Height);
+      this.imgSrc = imgElement.getAttribute(AttributeName.SRC.text);
+      this.width = getNumericAttribute(imgElement,AttributeName.WIDTH);
+      this.height = getNumericAttribute(imgElement,AttributeName.HEIGHT);
       this.aspectRatio = (float)width/(float)height;
     }else{
       this.marginLeft = textAlign;      

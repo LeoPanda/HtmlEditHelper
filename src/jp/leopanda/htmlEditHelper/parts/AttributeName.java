@@ -6,8 +6,8 @@ package jp.leopanda.htmlEditHelper.parts;
  *
  */
 enum AttributeName {
-  Width("width"), Height("height"), MarginLeft("margin-left"), MarginBottom("margin-bottom"),
-  Src("src"),Style("style"),Class("class");
+  WIDTH("width"), HEIGHT("height"), MARGINLEFT("margin-left"), MARGINBOTTOM("margin-bottom"),
+  SRC("src"),STYLE("style"),CLASS("class");
   public String text;
 
   AttributeName(String text) {
