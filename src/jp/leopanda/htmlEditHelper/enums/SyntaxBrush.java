@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 import jp.leopanda.panelFrame.filedParts.ListElement;
 

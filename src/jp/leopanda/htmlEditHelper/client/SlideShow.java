@@ -17,7 +17,7 @@ import jp.leopanda.panelFrame.validate.ValidateBase;
  */
 public class SlideShow extends FunctionPanelBase {
   // 固定文字列
-  private final String HOST_URL = GWT.getHostPageBaseURL();
+  private static final String HOST_URL = GWT.getHostPageBaseURL();
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   // フィールド
@@ -52,7 +52,7 @@ public class SlideShow extends FunctionPanelBase {
    */
   @Override
   public String getGeneratedHtml() {
-    return getImageDivision() + getButtonHtml() + getJSHtml() + getOnLoadHtml();
+    return getImageDivision() + getButtonHtml() + getJavaScriptUrl() + getOnLoadHtml();
   }
 
   /*
@@ -93,7 +93,7 @@ public class SlideShow extends FunctionPanelBase {
   /*
    * スクリプトタイプ指定部を生成する
    */
-  private String getJSHtml() {
+  private String getJavaScriptUrl() {
     String html = "<script type=\"text/javascript\" src=\"" + HOST_URL + "js/";
     html += "slideShow.js" + "\" charset=\"UTF-8\"></script>" + "\n";
     return html;

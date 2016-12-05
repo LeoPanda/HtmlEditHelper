@@ -1,16 +1,17 @@
 package jp.leopanda.htmlEditHelper.client;
 
+import com.google.gwt.aria.client.OrientationValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
 import jp.leopanda.htmlEditHelper.parts.LayoutCalc;
-import jp.leopanda.htmlEditHelper.parts.LayoutType;
 import jp.leopanda.htmlEditHelper.parts.LayoutVariables;
-import jp.leopanda.htmlEditHelper.parts.Error;
+import jp.leopanda.htmlEditHelper.enums.Error;
+import jp.leopanda.htmlEditHelper.enums.LayoutType;
 import jp.leopanda.htmlEditHelper.parts.ErrorListener;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
-import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.EventAction;
+import jp.leopanda.panelFrame.filedParts.ImageRadioButtonField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;
 import jp.leopanda.panelFrame.validate.IntegerValidator;
@@ -25,13 +26,13 @@ import jp.leopanda.panelFrame.validate.ValidateBase;
  */
 public class PhotoLayout extends FunctionPanelBase {
   // 変更対象のDIVタグ諸元
-  private final String TARGET_CLASS = "separator";
+  private static final String TARGET_CLASS = "separator";
   // 生成するDIVタグの諸元
-  private final int DIV_ALIGN = 0;
-  private final String DIV_CLASS = "pc-layout";
+  private static final int DIV_ALIGN = 0;
+  private static final String DIV_CLASS = "pc-layout";
   private LayoutCalc layoutCalc = new LayoutCalc(DIV_CLASS);
   // 画像インデント単位
-  private final String PIC_UNIT = "px";
+  private static final String PIC_UNIT = "px";
   // 入力フィールドの初期値
   private final int intMaxCols = 2;
   private final int intXIndent = 0;
@@ -44,13 +45,14 @@ public class PhotoLayout extends FunctionPanelBase {
   // フィールド
   private TextAreaField sourceHtml = new TextAreaField("sourceHtml", "ソースHTML:",
       new ValidateBase[] { isRequired });
-  private ListBoxField layoutSelector = new ListBoxField("layoutSelector", "レイアウトの種類", null,
-      LayoutType.values());
+  private ImageRadioButtonField layoutSelector = new ImageRadioButtonField("layoutSelector",
+      "レイアウトの種類", "layoutSelector", LayoutType.values(), OrientationValue.HORIZONTAL);
+
   private TextBoxField maxCols = new TextBoxField("indent", "カラム数",
       new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField xIndent = new TextBoxField("indent", "横インデント(" + PIC_UNIT + ")",
+  private TextBoxField indentX = new TextBoxField("indent", "横インデント(" + PIC_UNIT + ")",
       new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField yIndent = new TextBoxField("indent", "縦インデント(" + PIC_UNIT + ")",
+  private TextBoxField indentY = new TextBoxField("indent", "縦インデント(" + PIC_UNIT + ")",
       new ValidateBase[] { isRequired, isInteger });
 
   /**
@@ -69,8 +71,8 @@ public class PhotoLayout extends FunctionPanelBase {
     });
     // 初期値のセット
     maxCols.setText(String.valueOf(intMaxCols));
-    xIndent.setText(String.valueOf(intXIndent));
-    yIndent.setText(String.valueOf(intYIndent));
+    indentX.setText(String.valueOf(intXIndent));
+    indentY.setText(String.valueOf(intYIndent));
   }
 
   /*
@@ -80,8 +82,8 @@ public class PhotoLayout extends FunctionPanelBase {
     fieldMap.add(sourceHtml);
     fieldMap.add(layoutSelector);
     fieldMap.add(maxCols);
-    fieldMap.add(xIndent);
-    fieldMap.add(yIndent);
+    fieldMap.add(indentX);
+    fieldMap.add(indentY);
   }
 
   /**
@@ -91,13 +93,13 @@ public class PhotoLayout extends FunctionPanelBase {
     this.add(sourceHtml);
     this.add(layoutSelector);
     this.add(maxCols);
-    this.add(xIndent);
-    this.add(yIndent);
+    this.add(indentX);
+    this.add(indentY);
   }
 
   // layoutType変更時の処理
   private void onLayoutTypeChange() {
-    if (layoutSelector.getText() == LayoutType.Grid.getName()) {
+    if (layoutSelector.getText() == LayoutType.GRID.getName()) {
       maxCols.setVisible(true);
     } else {
       maxCols.setText(String.valueOf(intMaxCols));
@@ -112,7 +114,7 @@ public class PhotoLayout extends FunctionPanelBase {
   public String getGeneratedHtml() {
     layoutCalc.setErrorListener(new ErrorListener() {
       @Override
-      //レイアウト生成時のエラーハンドリング
+      // レイアウト生成時のエラーハンドリング
       public void onError(Error error, String text) {
         sourceHtml.setErr(jp.leopanda.panelFrame.enums.Error.NOMESSAGE, error.text + text);
         sourceHtml.popError();
@@ -120,8 +122,8 @@ public class PhotoLayout extends FunctionPanelBase {
     });
     layoutCalc.setVariables(
         variables.setVariables(LayoutType.values()[layoutSelector.getSelectedIndex()],
-            Integer.valueOf(xIndent.getText()),
-            Integer.valueOf(yIndent.getText()),
+            Integer.valueOf(indentX.getText()),
+            Integer.valueOf(indentY.getText()),
             DIV_ALIGN, Integer.valueOf(maxCols.getText()), layoutWidth));
     return layoutCalc.genLayoutedSource(
         replaceBr(setImgSourceSize(compressTextDiv(omitWhiteDiv(omitBr(sourceHtml.getText()))))));

@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 import jp.leopanda.panelFrame.filedParts.EventAction;
 import jp.leopanda.panelFrame.filedParts.FieldCommon;
@@ -31,23 +31,22 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    * コンストラクタ
    */
   public SyntaxOptionFields() {
-    this.selector = new ListBoxField("selector", "オプション:", null, SyntaxOption.values());
-    setUpFields();
+    setUpFields(new ListBoxField("selector", "オプション:", null, SyntaxOption.values()));
   }
 
   /*
    * クローン用コンストラクタ
    */
-  private SyntaxOptionFields(ListBoxField option) {
-    this.selector = option.clone();
-    setUpFields();
+  private SyntaxOptionFields(ListBoxField selector) {
+    setUpFields(selector.clone());
   }
 
   /*
    * オプション選択リストのセットアップ リストから選択されたオプションに応じた入力値フィールドを生成する。
    */
-  private void setUpFields() {
-    this.add(selector);
+  private void setUpFields(ListBoxField selector) {
+    this.selector = selector;
+    this.addField(selector);
     selector.addEventListener(new EventAction() {
       @Override
       public void onValueChange() {
@@ -63,23 +62,25 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
   private void setUpOptionValueField() {
     // 既にオプション値入力フィールドが生成されている場合はそれを除去する
     if (this.getFieldList().size() > 1) {
-      this.remove(1);
+      for (int i = 1; i <= this.getFieldList().size(); i++) {
+        this.removeField(i);
+      }
     }
     switch (SyntaxOption.values()[selector.getSelectedIndex()].getFieldType()) {
-    case CHAR:
-      setTextOptionField(new ValidateBase[] { isRequired });
-      break;
-    case NUMERIC:
-      setTextOptionField(new ValidateBase[] { isRequired, isNumeric });
-      break;
-    case NUMLIST:
-      setNumListOptionField();
-      break;
-    case BOOLEANS:
-      setBooleanOptionField();
-      break;
-    default:
-      break;
+      case CHAR:
+        setTextOptionField(new ValidateBase[] {isRequired});
+        break;
+      case NUMERIC:
+        setTextOptionField(new ValidateBase[] {isRequired, isNumeric});
+        break;
+      case NUMLIST:
+        setNumListOptionField();
+        break;
+      case BOOLEANS:
+        setBooleanOptionField();
+        break;
+      default:
+        break;
     }
   }
 
@@ -88,7 +89,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   private void setTextOptionField(ValidateBase[] validates) {
     optionValue = new TextBoxField("optionValue", "", validates);
-    this.add(optionValue);
+    this.addField(optionValue);
   }
 
   /*
@@ -96,7 +97,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   private void setBooleanOptionField() {
     optionValue = new ListBoxField("optionValue", "", null, BooleanElement.values());
-    this.add(optionValue);
+    this.addField(optionValue);
   }
 
   /*
@@ -104,10 +105,9 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   private void setNumListOptionField() {
     RegexValidator isNumList = new RegexValidator("\\[[0-9]+[,0-9]+\\]$", "数値をカンマ区切りで入力してください。");
-    optionValue = new TextBoxField("optionValue", "", new ValidateBase[] { isRequired,
-        isNumList });
+    optionValue = new TextBoxField("optionValue", "", new ValidateBase[] {isRequired, isNumList});
     optionValue.setText("[]");
-    this.add(optionValue);
+    this.addField(optionValue);
   }
 
   /*
@@ -115,8 +115,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   @Override
   public String getText() {
-    return "SyntaxHighlighter.defaults['" + selector.getText() + "']="
-        + optionValue.getText();
+    return "SyntaxHighlighter.defaults['" + selector.getText() + "']=" + optionValue.getText();
   }
 
   /*

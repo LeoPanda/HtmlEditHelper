@@ -9,19 +9,21 @@ package jp.leopanda.htmlEditHelper.parts;
 public class GridLayoutor {
   private DivTag[] divTags;
   private LayoutVariables variables;
-  
-/**
- * コンストラクタ
- * @param divTags
- * @param variables
- */
+
+  /**
+   * コンストラクタ
+   * 
+   * @param divTags 変更対象のDIVタグ配列
+   * @param variables 画面から入力されたパラメータ変数
+   */
   public GridLayoutor(DivTag[] divTags, LayoutVariables variables) {
     this.divTags = divTags;
     this.variables = variables;
   }
 
   /**
-   *  レイアウト整形を実施する
+   * レイアウト整形を実施する
+   * 
    * @return 整形後のDiv諸元配列
    */
   public DivTag[] doLayout() {
@@ -46,7 +48,7 @@ public class GridLayoutor {
 
   // レイアウト一行分の高さを得る
   private float getLayoutHeight(float totalAspects, int rowIndex) {
-    return (variables.layoutWidth - variables.xIndent * getNumIndent(rowIndex)) / totalAspects;
+    return (variables.layoutWidth - variables.indentX * getNumIndent(rowIndex)) / totalAspects;
   }
 
   // レイアウト一行に横インデントが何箇所挿入されるかを調べる
@@ -64,8 +66,8 @@ public class GridLayoutor {
     new RowLoop(layoutHeight) {
       @Override
       public float cellProcess(int cellIndex) {
-        divTags[cellIndex].setHeight(inputParam);
-        divTags[cellIndex].setWidth(inputParam * divTags[cellIndex].getAspectRatio());
+        divTags[cellIndex].setHeight(inputConstant);
+        divTags[cellIndex].setWidth(inputConstant * divTags[cellIndex].getAspectRatio());
         return 0;
       }
     }.summarry(rowIndex);
@@ -79,10 +81,10 @@ public class GridLayoutor {
         if (cellIndex % variables.maxCols < variables.maxCols - 1) {
           divTags[cellIndex].setMarginBottom(-1 * divTags[cellIndex].getHeight());
         } else {
-          divTags[cellIndex].setMarginBottom(variables.yIndent);
+          divTags[cellIndex].setMarginBottom(variables.indentY);
         }
         divTags[cellIndex].setTranslateX(summrizer);
-        return divTags[cellIndex].getWidth() + variables.xIndent;
+        return divTags[cellIndex].getWidth() + variables.indentX;
       }
     }.summarry(rowIndex);
     divTags[divTags.length - 1].setMarginBottom(0);
@@ -91,25 +93,24 @@ public class GridLayoutor {
   // レイアウト１行分のループ処理
   private abstract class RowLoop {
     protected float summrizer = 0;// ループ処理後ののサマリー値
-    protected float inputParam = 0;// 入力定数
+    protected float inputConstant = 0;// 入力定数
+
     /**
-     * 
+     * 単純ループ用コンストラクタ
      */
-    RowLoop() {
-    }
+    RowLoop() {}
+
     /**
-     * 入力値付きコンストラクタ
-     * @param inputPram
+     * 入力定数付きループ用コンストラクタ
      */
-    RowLoop(float inputPram) {
-      this.inputParam = inputPram;
+    RowLoop(float inputConstant) {
+      this.inputConstant = inputConstant;
     }
 
     /**
      * レイアウト１行分のループ処理を行いサマリー値を返す
      * 
-     * @param rowIndex
-     *          divTags配列のレイアウト行開始インデックス
+     * @param rowIndex divTags配列のレイアウト行開始インデックス
      * @return サマリー結果
      */
     public float summarry(int rowIndex) {
@@ -123,9 +124,8 @@ public class GridLayoutor {
     /**
      * セル毎の処理を記述する
      * 
-     * @param cellIndex
-     *          divTag配列の処理対象セル位置
-     * @return　サマリーに加算するセル単体の計算値
+     * @param cellIndex divTag配列の処理対象セル位置
+     * @return サマリーに加算するセル単体の計算値
      */
     public abstract float cellProcess(int cellIndex);
   }
