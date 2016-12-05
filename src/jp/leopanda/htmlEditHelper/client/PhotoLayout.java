@@ -1,10 +1,17 @@
 package jp.leopanda.htmlEditHelper.client;
 
+import com.google.gwt.aria.client.OrientationValue;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
-import jp.leopanda.htmlEditHelper.common.DivUtil;
-import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.parts.LayoutCalc;
+import jp.leopanda.htmlEditHelper.parts.LayoutType;
+import jp.leopanda.htmlEditHelper.parts.LayoutVariables;
+import jp.leopanda.htmlEditHelper.parts.Error;
+import jp.leopanda.htmlEditHelper.parts.ErrorListener;
+import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
+import jp.leopanda.panelFrame.filedParts.EventAction;
+import jp.leopanda.panelFrame.filedParts.ImageRadioButtonField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;
 import jp.leopanda.panelFrame.validate.IntegerValidator;
@@ -21,33 +28,31 @@ public class PhotoLayout extends FunctionPanelBase {
   // 変更対象のDIVタグ諸元
   private final String TARGET_CLASS = "separator";
   // 生成するDIVタグの諸元
-  private final int DIV_ALIGN = -15;
+  private final int DIV_ALIGN = 0;
   private final String DIV_CLASS = "pc-layout";
-  private DivUtil divUtil = new DivUtil(DIV_CLASS);
+  private LayoutCalc layoutCalc = new LayoutCalc(DIV_CLASS);
   // 画像インデント単位
   private final String PIC_UNIT = "px";
   // 入力フィールドの初期値
   private final int intMaxCols = 2;
-  private final int intXIndent = 5;
-  private final int intYIndent = 10;
-  private final int intTextAlign = 15;
-  private final int intTextWidth = 320;
-
+  private final int intXIndent = 0;
+  private final int intYIndent = 0;
+  private final int layoutWidth = 640; // レイアウト領域の幅
+  private LayoutVariables variables = new LayoutVariables();
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   private IntegerValidator isInteger = new IntegerValidator();
   // フィールド
   private TextAreaField sourceHtml = new TextAreaField("sourceHtml", "ソースHTML:",
       new ValidateBase[] { isRequired });
+  private ImageRadioButtonField layoutSelector = new ImageRadioButtonField("layoutSelector",
+      "レイアウトの種類", "layoutSelector", LayoutType.values(), OrientationValue.HORIZONTAL);
+
   private TextBoxField maxCols = new TextBoxField("indent", "カラム数",
       new ValidateBase[] { isRequired, isInteger });
   private TextBoxField xIndent = new TextBoxField("indent", "横インデント(" + PIC_UNIT + ")",
       new ValidateBase[] { isRequired, isInteger });
   private TextBoxField yIndent = new TextBoxField("indent", "縦インデント(" + PIC_UNIT + ")",
-      new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField textAlign = new TextBoxField("indent", "テキスト字下げ (" + PIC_UNIT + ")",
-      new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField textWidth = new TextBoxField("indent", "テキスト幅 (" + PIC_UNIT + ")",
       new ValidateBase[] { isRequired, isInteger });
 
   /**
@@ -57,12 +62,17 @@ public class PhotoLayout extends FunctionPanelBase {
     super();
     setFieldMap();
     setPanel();
+    // layoutSeleorの変更アクションリスナーの追加
+    layoutSelector.addEventListener(new EventAction() {
+      @Override
+      public void onValueChange() {
+        onLayoutTypeChange();
+      }
+    });
     // 初期値のセット
     maxCols.setText(String.valueOf(intMaxCols));
     xIndent.setText(String.valueOf(intXIndent));
     yIndent.setText(String.valueOf(intYIndent));
-    textAlign.setText(String.valueOf(intTextAlign));
-    textWidth.setText(String.valueOf(intTextWidth));
   }
 
   /*
@@ -70,11 +80,10 @@ public class PhotoLayout extends FunctionPanelBase {
    */
   private void setFieldMap() {
     fieldMap.add(sourceHtml);
+    fieldMap.add(layoutSelector);
     fieldMap.add(maxCols);
     fieldMap.add(xIndent);
     fieldMap.add(yIndent);
-    fieldMap.add(textAlign);
-    fieldMap.add(textWidth);
   }
 
   /**
@@ -82,11 +91,20 @@ public class PhotoLayout extends FunctionPanelBase {
    */
   private void setPanel() {
     this.add(sourceHtml);
+    this.add(layoutSelector);
     this.add(maxCols);
     this.add(xIndent);
     this.add(yIndent);
-    this.add(textAlign);
-    this.add(textWidth);
+  }
+
+  // layoutType変更時の処理
+  private void onLayoutTypeChange() {
+    if (layoutSelector.getText() == LayoutType.GRID.getName()) {
+      maxCols.setVisible(true);
+    } else {
+      maxCols.setText(String.valueOf(intMaxCols));
+      maxCols.setVisible(false);
+    }
   }
 
   /**
@@ -94,11 +112,21 @@ public class PhotoLayout extends FunctionPanelBase {
    */
   @Override
   public String getGeneratedHtml() {
-    divUtil.setValues(Integer.valueOf(xIndent.getText()), Integer.valueOf(yIndent.getText()),
-        DIV_ALIGN, Integer.valueOf(maxCols.getText()), Integer.valueOf(textAlign.getText()),
-        Integer.valueOf(textWidth.getText()));
-    return divUtil
-        .genLayoutDiv(replaceBr(compressTextDiv(omitWhiteDiv(omitBr(sourceHtml.getText())))));
+    layoutCalc.setErrorListener(new ErrorListener() {
+      @Override
+      // レイアウト生成時のエラーハンドリング
+      public void onError(Error error, String text) {
+        sourceHtml.setErr(jp.leopanda.panelFrame.enums.Error.NOMESSAGE, error.text + text);
+        sourceHtml.popError();
+      }
+    });
+    layoutCalc.setVariables(
+        variables.setVariables(LayoutType.values()[layoutSelector.getSelectedIndex()],
+            Integer.valueOf(xIndent.getText()),
+            Integer.valueOf(yIndent.getText()),
+            DIV_ALIGN, Integer.valueOf(maxCols.getText()), layoutWidth));
+    return layoutCalc.genLayoutedSource(
+        replaceBr(setImgSourceSize(compressTextDiv(omitWhiteDiv(omitBr(sourceHtml.getText()))))));
   }
 
   // 対象のDIVとDIVの間にある<br />を削除
@@ -111,6 +139,15 @@ public class PhotoLayout extends FunctionPanelBase {
   private String omitWhiteDiv(String source) {
     String regex = getDivRegex(TARGET_CLASS) + "([\t\n]*((<br />)[\t\n]*)*</div>)";
     return source.replaceAll(regex, "");
+  }
+
+  // 画像の表示ソースを変更する
+  private String setImgSourceSize(String source) {
+    String regex = "(<img.*src=.*)(/s[0-9]{3}/)(.*/>)";
+    RegExp regExp = RegExp.compile(regex, "gm");
+    regExp.exec(source);
+    source = regExp.replace(source, "$1/s640/$3");
+    return source;
   }
 
   // 連続する複数行のテキストタグを１つのタグに集約する（不要なタグをタブ文字に置き換える）

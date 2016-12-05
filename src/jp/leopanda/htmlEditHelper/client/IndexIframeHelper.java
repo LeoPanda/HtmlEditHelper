@@ -6,9 +6,10 @@ import java.util.Map;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
-import jp.leopanda.htmlEditHelper.common.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
 import jp.leopanda.panelFrame.enums.Error;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
+import jp.leopanda.panelFrame.filedParts.ListElement;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;
 import jp.leopanda.panelFrame.validate.NumericValidator;
 import jp.leopanda.panelFrame.validate.RequiredValidator;
@@ -35,11 +36,11 @@ class IndexIframeHelper extends FunctionPanelBase {
   private TextBoxField caterogy = new TextBoxField("category", "カテゴリ:", null);
   private TextBoxField queryString = new TextBoxField("queryString", "検索文字列:", null);
   private ListBoxField numOfWidth = new ListBoxField("numOfWidth", "１行の最大コマ数:", null,
-      setNumValueList(MAX_WIDTH));
+      getNumElements(MIN_LIST_VAL, MAX_WIDTH));
   private TextBoxField iFrameWidth = new TextBoxField("iFrameWidth", "iframe横幅:",
       new ValidateBase[] { isRequired, isNumeric });
   private ListBoxField iFrameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
-      setNumValueList(MAX_IFRAME_HEIGHT));
+      getNumElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
 
   /*
    * コンストラクタ
@@ -79,14 +80,31 @@ class IndexIframeHelper extends FunctionPanelBase {
   }
 
   /*
-   * 数値リストボックス用値リストの作成
+   * リストボックス用選択値の生成
    */
-  private Map<String, String> setNumValueList(int max) {
-    Map<String, String> valueList = new HashMap<String, String>();
-    for (int i = MIN_LIST_VAL; i <= max; i++) {
-      valueList.put(String.valueOf(i), String.valueOf(i));
+  private NumElement[] getNumElements(int min, int max) {
+    NumElement[] elements = new NumElement[max - min];
+    for (int i = 0; i <= max - min; i++) {
+      elements[i] = new NumElement(String.valueOf(min + i));
     }
-    return valueList;
+    return elements;
+  }
+
+  /*
+   * リストボックス用選択値エレメント定義クラス
+   */
+  private class NumElement implements ListElement {
+    private String name;
+
+    NumElement(String name) {
+      this.name = name;
+    }
+
+    @Override
+    public String getName() {
+      return this.name;
+    }
+
   }
 
   /*
@@ -125,7 +143,7 @@ class IndexIframeHelper extends FunctionPanelBase {
   private String getTitleDom(String titleText) {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("style", "font-size: 80%; font-weight: 600;");
-    return getDomString("div", attributes,titleText);
+    return getDomString("div", attributes, titleText);
   }
 
   /*
@@ -135,7 +153,7 @@ class IndexIframeHelper extends FunctionPanelBase {
     Map<String, String> attributes = new HashMap<String, String>();
     attributes.put("src", getAppURL());
     attributes.put("style", getIframeStyle());
-    return getDomString("iframe", attributes,"");
+    return getDomString("iframe", attributes, "");
   }
 
   /*
@@ -175,7 +193,8 @@ class IndexIframeHelper extends FunctionPanelBase {
   /*
    * HTML Dom elementを生成する。
    */
-  private String getDomString(String elementName, Map<String, String> attributes,String childText) {
+  private String getDomString(String elementName, Map<String, String> attributes,
+      String childText) {
     Element element = XMLParser.createDocument().createElement(elementName);
     for (Map.Entry<String, String> attribute : attributes.entrySet()) {
       element.setAttribute(attribute.getKey(), attribute.getValue());
