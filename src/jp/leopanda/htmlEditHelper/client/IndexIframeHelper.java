@@ -22,12 +22,12 @@ import jp.leopanda.panelFrame.validate.ValidateBase;
  *
  */
 class IndexIframeHelper extends FunctionPanelBase {
-  private final String APP_NAME = "http://2.optimal-spark-439.appspot.com/"; // iframeに入れるアプリ名
-  private final int FRAME_MARGINE = 11; // iframeの上部マージン
-  private final int MULTIPLI = 127; // iframeの高さ１行あたりの乗算定数
-  private final int MIN_LIST_VAL = 1; // 数値リストボックスの最小値
-  private final int MAX_WIDTH = 6; // １行の最大コマ数
-  private final int MAX_IFRAME_HEIGHT = 5;// iframeの最大行数
+  private static final String APP_NAME = "http://2.optimal-spark-439.appspot.com/";// iframeに入れるアプリ名
+  private static final int FRAME_MARGINE = 11; // iframeの上部マージン
+  private static final int MULTIPLI = 127; // iframeの高さ１行あたりの乗算定数
+  private static final int MIN_LIST_VAL = 1; // 数値リストボックスの最小値
+  private static final int MAX_WIDTH = 6; // １行の最大コマ数
+  private static final int MAX_IFRAME_HEIGHT = 5;// iframeの最大行数
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   private NumericValidator isNumeric = new NumericValidator();
@@ -35,11 +35,11 @@ class IndexIframeHelper extends FunctionPanelBase {
   private TextBoxField title = new TextBoxField("title", "タイトル名:", null);
   private TextBoxField caterogy = new TextBoxField("category", "カテゴリ:", null);
   private TextBoxField queryString = new TextBoxField("queryString", "検索文字列:", null);
-  private ListBoxField numOfWidth = new ListBoxField("numOfWidth", "１行の最大コマ数:", null,
-      getNumElements(MIN_LIST_VAL, MAX_WIDTH));
-  private TextBoxField iFrameWidth = new TextBoxField("iFrameWidth", "iframe横幅:",
-      new ValidateBase[] { isRequired, isNumeric });
-  private ListBoxField iFrameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
+  private ListBoxField numOfWidth =
+      new ListBoxField("numOfWidth", "１行の最大コマ数:", null, getNumElements(MIN_LIST_VAL, MAX_WIDTH));
+  private TextBoxField frameWidth =
+      new TextBoxField("iFrameWidth", "iframe横幅:", new ValidateBase[] {isRequired, isNumeric});
+  private ListBoxField frameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
       getNumElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
 
   /*
@@ -51,8 +51,8 @@ class IndexIframeHelper extends FunctionPanelBase {
     setPanel();
     // 初期値セット
     numOfWidth.setText("5");
-    iFrameWidth.setText("800");
-    iFrameHight.setText("2");
+    frameWidth.setText("800");
+    frameHight.setText("2");
   }
 
   /*
@@ -63,8 +63,8 @@ class IndexIframeHelper extends FunctionPanelBase {
     fieldMap.add(caterogy);
     fieldMap.add(queryString);
     fieldMap.add(numOfWidth);
-    fieldMap.add(iFrameHight);
-    fieldMap.add(iFrameWidth);
+    fieldMap.add(frameHight);
+    fieldMap.add(frameWidth);
   }
 
   /*
@@ -75,8 +75,8 @@ class IndexIframeHelper extends FunctionPanelBase {
     this.add(caterogy);
     this.add(queryString);
     this.add(numOfWidth);
-    this.add(iFrameHight);
-    this.add(iFrameWidth);
+    this.add(frameHight);
+    this.add(frameWidth);
   }
 
   /*
@@ -151,7 +151,7 @@ class IndexIframeHelper extends FunctionPanelBase {
    */
   private String getIframeDom() {
     Map<String, String> attributes = new HashMap<String, String>();
-    attributes.put("src", getAppURL());
+    attributes.put("src", getAppUrl());
     attributes.put("style", getIframeStyle());
     return getDomString("iframe", attributes, "");
   }
@@ -159,7 +159,7 @@ class IndexIframeHelper extends FunctionPanelBase {
   /*
    * iframeに埋め込むアプリのURLをパラメータ付きで生成する
    */
-  private String getAppURL() {
+  private String getAppUrl() {
     boolean hasCategory = caterogy.getText().length() > 0;
     boolean hasQuery = queryString.getText().length() > 0;
 
@@ -179,8 +179,8 @@ class IndexIframeHelper extends FunctionPanelBase {
    * iframe用のスタイルを生成する
    */
   private String getIframeStyle() {
-    return "border: none;" + "width: " + iFrameWidth.getText() + "px;" + "height:"
-        + getIframeHeight(iFrameHight.getText()) + "px;";
+    return "border: none;" + "width: " + frameWidth.getText() + "px;" + "height:"
+        + getIframeHeight(frameHight.getText()) + "px;";
   }
 
   /*

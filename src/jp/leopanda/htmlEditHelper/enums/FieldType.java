@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 /**
  * SyntaxHighliter用オプション値のフィールドタイプ
