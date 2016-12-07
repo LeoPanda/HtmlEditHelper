@@ -1,11 +1,11 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 /**
  * タグの種類
  * @author LeoPanda
  *
  */
-enum TagName {
+public enum TagName {
   DIV("div"), IMG("img");
   public String text;
 

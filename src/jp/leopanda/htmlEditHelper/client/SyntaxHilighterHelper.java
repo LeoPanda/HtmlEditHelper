@@ -2,10 +2,10 @@ package jp.leopanda.htmlEditHelper.client;
 
 import com.google.gwt.core.client.GWT;
 
+import jp.leopanda.htmlEditHelper.enums.SyntaxBrush;
+import jp.leopanda.htmlEditHelper.enums.SyntaxCss;
+import jp.leopanda.htmlEditHelper.enums.SyntaxOptionFields;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
-import jp.leopanda.htmlEditHelper.parts.SyntaxOptionFields;
-import jp.leopanda.htmlEditHelper.parts.SyntaxBrush;
-import jp.leopanda.htmlEditHelper.parts.SyntaxCss;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.panelParts.IncrementalWrapper;
@@ -20,7 +20,7 @@ import jp.leopanda.panelFrame.validate.ValidateBase;
  */
 public class SyntaxHilighterHelper extends FunctionPanelBase {
   // 固定文字列
-  private final String HOST_URL = GWT.getHostPageBaseURL();
+  private static final String HOST_URL = GWT.getHostPageBaseURL();
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   // フィールド
@@ -77,13 +77,13 @@ public class SyntaxHilighterHelper extends FunctionPanelBase {
    */
   @Override
   public String getGeneratedHtml() {
-    return getJSHtml() + getCssHtml() + getSrcHtml() + getExecHtml();
+    return getJavaScriptUrl() + getCssHtml() + getSrcHtml() + getExecHtml();
   }
 
   /*
    * スクリプトタイプ指定部を生成する
    */
-  private String getJSHtml() {
+  private String getJavaScriptUrl() {
     String jsTagFront = "<script type=\"text/javascript\" src=\"" + HOST_URL + "scripts/";
     String jsTagBack = "\"></script>" + "\n";
     String html = jsTagFront + "shCore.js" + jsTagBack;

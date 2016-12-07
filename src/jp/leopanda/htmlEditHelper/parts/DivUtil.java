@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.common;
+package jp.leopanda.htmlEditHelper.parts;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;

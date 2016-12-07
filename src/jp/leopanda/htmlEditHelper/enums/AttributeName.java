@@ -1,11 +1,11 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 /**
  * タグの属性名
  * @author LeoPanda
  *
  */
-enum AttributeName {
+public enum AttributeName {
   WIDTH("width"), HEIGHT("height"), MARGINLEFT("margin-left"), MARGINBOTTOM("margin-bottom"),
   SRC("src"),STYLE("style"),CLASS("class");
   public String text;

@@ -29,6 +29,7 @@
   <source path='common'/>
   <source path='parts'/>
   <source path='resources'/>
+  <source path='enums'/>
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
 </module>

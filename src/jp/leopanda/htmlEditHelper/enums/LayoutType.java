@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;

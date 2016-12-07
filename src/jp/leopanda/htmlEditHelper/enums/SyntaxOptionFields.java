@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 import jp.leopanda.panelFrame.filedParts.EventAction;
 import jp.leopanda.panelFrame.filedParts.FieldCommon;
@@ -67,20 +67,20 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
       }
     }
     switch (SyntaxOption.values()[selector.getSelectedIndex()].getFieldType()) {
-    case CHAR:
-      setTextOptionField(new ValidateBase[] { isRequired });
-      break;
-    case NUMERIC:
-      setTextOptionField(new ValidateBase[] { isRequired, isNumeric });
-      break;
-    case NUMLIST:
-      setNumListOptionField();
-      break;
-    case BOOLEANS:
-      setBooleanOptionField();
-      break;
-    default:
-      break;
+      case CHAR:
+        setTextOptionField(new ValidateBase[] {isRequired});
+        break;
+      case NUMERIC:
+        setTextOptionField(new ValidateBase[] {isRequired, isNumeric});
+        break;
+      case NUMLIST:
+        setNumListOptionField();
+        break;
+      case BOOLEANS:
+        setBooleanOptionField();
+        break;
+      default:
+        break;
     }
   }
 
@@ -105,8 +105,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   private void setNumListOptionField() {
     RegexValidator isNumList = new RegexValidator("\\[[0-9]+[,0-9]+\\]$", "数値をカンマ区切りで入力してください。");
-    optionValue = new TextBoxField("optionValue", "", new ValidateBase[] { isRequired,
-        isNumList });
+    optionValue = new TextBoxField("optionValue", "", new ValidateBase[] {isRequired, isNumList});
     optionValue.setText("[]");
     this.addField(optionValue);
   }
@@ -116,8 +115,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   @Override
   public String getText() {
-    return "SyntaxHighlighter.defaults['" + selector.getText() + "']="
-        + optionValue.getText();
+    return "SyntaxHighlighter.defaults['" + selector.getText() + "']=" + optionValue.getText();
   }
 
   /*

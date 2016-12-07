@@ -1,4 +1,4 @@
-package jp.leopanda.htmlEditHelper.parts;
+package jp.leopanda.htmlEditHelper.enums;
 
 /**
  * 個別エラーメッセージ

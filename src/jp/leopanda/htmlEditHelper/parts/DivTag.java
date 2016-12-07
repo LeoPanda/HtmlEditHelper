@@ -1,10 +1,14 @@
 package jp.leopanda.htmlEditHelper.parts;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 
+import jp.leopanda.htmlEditHelper.enums.AttributeName;
+import jp.leopanda.htmlEditHelper.enums.Error;
+import jp.leopanda.htmlEditHelper.enums.TagName;
+
 /**
- * PhotoLayout用
- * 生成するDivの諸元を保持する
+ * PhotoLayout用 生成するDivの諸元を保持する
  * 
  * @author LeoPanda
  *
@@ -22,7 +26,7 @@ public class DivTag {
 
   /**
    * コンストラクタ
-   * @param col float 整形後のカラム位置
+   * 
    * @param width float DIVのwidthエレメント値
    * @param height float DIVのheightエレメント値
    * @param marginLeft DIVのmarginLeftエレメント値
@@ -32,30 +36,33 @@ public class DivTag {
     this.height = height;
     this.marginLeft = marginLeft;
   }
+
   /**
    * コンストラクタ
+   * 
    * @param divElement HTMLソース中のDIVタグのエレメント
    * @param textAlign imgなしDIVの場合の左マージン
    */
-  public DivTag(Element divElement,float textAlign,ErrorListener errorListener){
+  public DivTag(Element divElement, float textAlign, ErrorListener errorListener) {
     this.errorListener = errorListener;
     NodeList<Element> childImgNode = divElement.getElementsByTagName(TagName.IMG.text);
     if (childImgNode.getLength() > 0) {
-      Element imgElement = childImgNode.getItem(0); 
+      Element imgElement = childImgNode.getItem(0);
       this.imgSrc = imgElement.getAttribute(AttributeName.SRC.text);
-      this.width = getNumericAttribute(imgElement,AttributeName.WIDTH);
-      this.height = getNumericAttribute(imgElement,AttributeName.HEIGHT);
-      this.aspectRatio = (float)width/(float)height;
-    }else{
-      this.marginLeft = textAlign;      
+      this.width = getNumericAttribute(imgElement, AttributeName.WIDTH);
+      this.height = getNumericAttribute(imgElement, AttributeName.HEIGHT);
+      this.aspectRatio = (float) width / (float) height;
+    } else {
+      this.marginLeft = textAlign;
     }
   }
-  //エレメントから数値属性を取得する
-  private float getNumericAttribute(Element element,AttributeName attributeName){
-    String attribute =element.getAttribute(attributeName.text);
-    String errorText = "<img>の"+attributeName.text;
-    if(attribute.isEmpty()){
-      errorListener.onError(Error.NO_ATTRIBUTE,errorText);
+
+  // エレメントから数値属性を取得する
+  private float getNumericAttribute(Element element, AttributeName attributeName) {
+    String attribute = element.getAttribute(attributeName.text);
+    String errorText = "<img>の" + attributeName.text;
+    if (attribute.isEmpty()) {
+      errorListener.onError(Error.NO_ATTRIBUTE, errorText);
       return 0;
     }
     float retValue = 0;
@@ -78,6 +85,7 @@ public class DivTag {
   public float getTranslateX() {
     return translateX;
   }
+
   public float getTranslateY() {
     return translateY;
   }
@@ -93,7 +101,8 @@ public class DivTag {
   public String getImgSrc() {
     return this.imgSrc;
   }
-  public float getAspectRatio(){
+
+  public float getAspectRatio() {
     return this.aspectRatio;
   }
 
@@ -108,6 +117,7 @@ public class DivTag {
   public void setTranslateX(float translateX) {
     this.translateX = translateX;
   }
+
   public void setTranslateY(float translateY) {
     this.translateY = translateY;
   }
@@ -115,7 +125,8 @@ public class DivTag {
   public void setMarginBottom(float marginBottom) {
     this.marginBottom = marginBottom;
   }
-  public void setAspectRatio(float aspectRatio){
+
+  public void setAspectRatio(float aspectRatio) {
     this.aspectRatio = aspectRatio;
   }
 }
