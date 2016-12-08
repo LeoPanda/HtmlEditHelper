@@ -4,8 +4,8 @@ import com.google.gwt.core.client.GWT;
 
 import jp.leopanda.htmlEditHelper.enums.SyntaxBrush;
 import jp.leopanda.htmlEditHelper.enums.SyntaxCss;
-import jp.leopanda.htmlEditHelper.enums.SyntaxOptionFields;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.parts.SyntaxOptionFields;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.panelParts.IncrementalWrapper;
@@ -138,10 +138,5 @@ public class SyntaxHilighterHelper extends FunctionPanelBase {
     script += "var element = document.getElementById('code');" + "\n";
     script += "SyntaxHighlighter.highlight(undefined, element);" + "\n";
     return script;
-  }
-
-  @Override
-  public String getExstraHtml() {
-    return null;
   }
 }

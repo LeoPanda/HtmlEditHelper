@@ -1,5 +1,6 @@
-package jp.leopanda.htmlEditHelper.enums;
+package jp.leopanda.htmlEditHelper.parts;
 
+import jp.leopanda.htmlEditHelper.enums.SyntaxOption;
 import jp.leopanda.panelFrame.filedParts.EventAction;
 import jp.leopanda.panelFrame.filedParts.FieldCommon;
 import jp.leopanda.panelFrame.filedParts.FieldGroup;
