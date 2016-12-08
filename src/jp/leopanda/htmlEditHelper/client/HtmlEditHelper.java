@@ -12,7 +12,10 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import jp.leopanda.htmlEditHelper.enums.Panels;
+import jp.leopanda.htmlEditHelper.enums.PreviewType;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.resources.TextResources;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -20,44 +23,6 @@ import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
 public class HtmlEditHelper implements EntryPoint {
   GeneratedHtmlArea generatedHtmlArea = new GeneratedHtmlArea(""); // 生成されたHTMLを表示するエリア
   TabPanel tabPanel; // 機能選択タブパネル
-
-  /*
-   * タブパネル内入力パネル定義
-   */
-  private enum Panels {
-    IndexIframeHelper(new IndexIframeHelper(), "索引用iframe生成", PreviewType.Panel),
-    SyntaxHilighterHelper(new SyntaxHilighterHelper(), "SyntaxHilighter", PreviewType.Window),
-    SlideShow(new SlideShow(), "スライドショー", PreviewType.Window),
-    PhotoLayout(new PhotoLayout(), "写真のレイアウト配置", PreviewType.Panel);
-    private FunctionPanelBase panel;
-    private String title;
-    private PreviewType previewType;
-
-    Panels(FunctionPanelBase panel, String title, PreviewType previewType) {
-      this.panel = panel;
-      this.title = title;
-      this.previewType = previewType;
-    }
-
-    public FunctionPanelBase getPanel() {
-      return this.panel;
-    }
-
-    public String getTitle() {
-      return this.title;
-    }
-
-    public PreviewType getPreviewType() {
-      return this.previewType;
-    }
-  }
-
-  /*
-   * プレビュー表示方法の種類
-   */
-  private enum PreviewType {
-    Panel, Window;
-  }
 
   @Override
   /*
@@ -100,10 +65,10 @@ public class HtmlEditHelper implements EntryPoint {
   private void showPreview() {
     int index = tabPanel.getTabBar().getSelectedTab();
     PreviewType previewType = Panels.values()[index].getPreviewType();
-    if (previewType == PreviewType.Panel) {
-      new PopPreviewWindow(generatedHtmlArea.getText()).show();
-    } else if (previewType == PreviewType.Window) {
-      openPreviewWin(generatedHtmlArea.getText(),
+    if (previewType == PreviewType.PANEL) {
+      new PopPreviewPanel(generatedHtmlArea.getText()).show();
+    } else if (previewType == PreviewType.WINDOW) {
+      openPreviewWindow(generatedHtmlArea.getText(),
           Panels.values()[index].getPanel().getExstraHtml());
     }
   }
@@ -111,8 +76,8 @@ public class HtmlEditHelper implements EntryPoint {
   /*
    * プレビューパネル
    */
-  private class PopPreviewWindow extends PopupPanel {
-    public PopPreviewWindow(String html) {
+  private class PopPreviewPanel extends PopupPanel {
+    public PopPreviewPanel(String html) {
       super(true, true);
       this.setPopupPosition(620, 150);
       this.setWidth("680px");
@@ -122,25 +87,20 @@ public class HtmlEditHelper implements EntryPoint {
   }
 
   /*
-   * プレビューウィンドウ
+   * プレビューウィンドウを開く
    */
-  private static native void openPreviewWin(String html, String exstraHtml) /*-{
+  private void openPreviewWindow(String generatedSource, String extraHtml) {
+    openWindow(TextResources.INSTANCE.previewHead().getText() + generatedSource + extraHtml
+        + "</body></html>");
+  }
+
+  /*
+   * サブウィンドウを開く
+   */
+  private static native void openWindow(String html) /*-{
         var newWin = $wnd.open('', 'newWin',
                 'height=800,width=640,left=620,top=150');
-        var head = '<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" ';
-        head += 'xmlns:b="http://www.google.com/2005/gml/b" ';
-        head += 'xmlns:data="http://www.google.com/2005/gml/data" ';
-        head += 'xmlns:expr="http://www.google.com/2005/gml/expr" ';
-        head += 'xmlns:fb="http://www.facebook.com/2008/fbml">';
-        head += '<head>'
-                + '<meta http-equiv="content-type" content="text/html; charset=UTF-8">';
-        head += '</head><body>';
-        newWin.document.write(head);
         newWin.document.write(html);
-        if (exstraHtml != null) {
-            newWin.document.write(exstraHtml);
-        }
-        newWin.document.write('</body></html>');
   }-*/;
 
   /*

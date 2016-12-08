@@ -139,9 +139,4 @@ public class SyntaxHilighterHelper extends FunctionPanelBase {
     script += "SyntaxHighlighter.highlight(undefined, element);" + "\n";
     return script;
   }
-
-  @Override
-  public String getExstraHtml() {
-    return null;
-  }
 }

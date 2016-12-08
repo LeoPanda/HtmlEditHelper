@@ -21,7 +21,7 @@ import jp.leopanda.panelFrame.validate.ValidateBase;
  * @author LeoPanda
  *
  */
-class IndexIframeHelper extends FunctionPanelBase {
+public class IndexIframeHelper extends FunctionPanelBase {
   private static final String APP_NAME = "http://2.optimal-spark-439.appspot.com/";// iframeに入れるアプリ名
   private static final int FRAME_MARGINE = 11; // iframeの上部マージン
   private static final int MULTIPLI = 127; // iframeの高さ１行あたりの乗算定数
@@ -42,7 +42,7 @@ class IndexIframeHelper extends FunctionPanelBase {
   private ListBoxField frameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
       getNumElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
 
-  /*
+  /**
    * コンストラクタ
    */
   public IndexIframeHelper() {
@@ -107,9 +107,10 @@ class IndexIframeHelper extends FunctionPanelBase {
 
   }
 
-  /*
+  /** 
    * 入力チェック
    */
+  @Override
   public boolean validateFields() {
     // 個別項目のチェック
     if (!super.validateFields()) {
@@ -125,7 +126,7 @@ class IndexIframeHelper extends FunctionPanelBase {
     return true;
   }
 
-  /*
+  /**
    * HTMLを生成する
    */
   public String getGeneratedHtml() {
@@ -201,12 +202,6 @@ class IndexIframeHelper extends FunctionPanelBase {
     }
     element.appendChild(XMLParser.createDocument().createTextNode(childText));
     return element.toString().replaceAll("&amp;", "&");
-  }
-
-  @Override
-  public String getExstraHtml() {
-    // TODO 自動生成されたメソッド・スタブ
-    return null;
   }
 
 }

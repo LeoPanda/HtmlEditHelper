@@ -178,14 +178,4 @@ public class PhotoLayout extends FunctionPanelBase {
     String source = getDivRegex(claz);
     return source.substring(0, source.length() - 2) + ")";
   }
-
-  /**
-   * 追加HTMLの生成
-   */
-  @Override
-  public String getExstraHtml() {
-    // TODO 自動生成されたメソッド・スタブ
-    return null;
-  }
-
 }
