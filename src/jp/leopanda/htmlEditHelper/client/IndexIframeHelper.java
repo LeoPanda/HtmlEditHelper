@@ -6,10 +6,10 @@ import java.util.Map;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
+import jp.leopanda.htmlEditHelper.parts.ElementValue;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
 import jp.leopanda.panelFrame.enums.Error;
 import jp.leopanda.panelFrame.filedParts.ListBoxField;
-import jp.leopanda.panelFrame.filedParts.ListElement;
 import jp.leopanda.panelFrame.filedParts.TextBoxField;
 import jp.leopanda.panelFrame.validate.NumericValidator;
 import jp.leopanda.panelFrame.validate.RequiredValidator;
@@ -35,12 +35,12 @@ public class IndexIframeHelper extends FunctionPanelBase {
   private TextBoxField title = new TextBoxField("title", "タイトル名:", null);
   private TextBoxField caterogy = new TextBoxField("category", "カテゴリ:", null);
   private TextBoxField queryString = new TextBoxField("queryString", "検索文字列:", null);
-  private ListBoxField numOfWidth =
-      new ListBoxField("numOfWidth", "１行の最大コマ数:", null, getNumElements(MIN_LIST_VAL, MAX_WIDTH));
+  private ListBoxField numOfWidth = new ListBoxField("numOfWidth", "１行の最大コマ数:", null,
+      new ElementValue().getSerialNumberElements(MIN_LIST_VAL, MAX_WIDTH));
   private TextBoxField frameWidth =
       new TextBoxField("iFrameWidth", "iframe横幅:", new ValidateBase[] {isRequired, isNumeric});
   private ListBoxField frameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
-      getNumElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
+      new ElementValue().getSerialNumberElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
 
   /**
    * コンストラクタ
@@ -79,35 +79,7 @@ public class IndexIframeHelper extends FunctionPanelBase {
     this.add(frameWidth);
   }
 
-  /*
-   * リストボックス用選択値の生成
-   */
-  private NumElement[] getNumElements(int min, int max) {
-    NumElement[] elements = new NumElement[max - min];
-    for (int i = 0; i <= max - min; i++) {
-      elements[i] = new NumElement(String.valueOf(min + i));
-    }
-    return elements;
-  }
-
-  /*
-   * リストボックス用選択値エレメント定義クラス
-   */
-  private class NumElement implements ListElement {
-    private String name;
-
-    NumElement(String name) {
-      this.name = name;
-    }
-
-    @Override
-    public String getName() {
-      return this.name;
-    }
-
-  }
-
-  /** 
+  /**
    * 入力チェック
    */
   @Override
@@ -158,6 +130,19 @@ public class IndexIframeHelper extends FunctionPanelBase {
   }
 
   /*
+   * HTML Dom elementを生成する。
+   */
+  private String getDomString(String elementName, Map<String, String> attributes,
+      String childText) {
+    Element element = XMLParser.createDocument().createElement(elementName);
+    for (Map.Entry<String, String> attribute : attributes.entrySet()) {
+      element.setAttribute(attribute.getKey(), attribute.getValue());
+    }
+    element.appendChild(XMLParser.createDocument().createTextNode(childText));
+    return element.toString().replaceAll("&amp;", "&");
+  }
+
+  /*
    * iframeに埋め込むアプリのURLをパラメータ付きで生成する
    */
   private String getAppUrl() {
@@ -191,17 +176,5 @@ public class IndexIframeHelper extends FunctionPanelBase {
     return String.valueOf(FRAME_MARGINE + Integer.parseInt(height) * MULTIPLI);
   }
 
-  /*
-   * HTML Dom elementを生成する。
-   */
-  private String getDomString(String elementName, Map<String, String> attributes,
-      String childText) {
-    Element element = XMLParser.createDocument().createElement(elementName);
-    for (Map.Entry<String, String> attribute : attributes.entrySet()) {
-      element.setAttribute(attribute.getKey(), attribute.getValue());
-    }
-    element.appendChild(XMLParser.createDocument().createTextNode(childText));
-    return element.toString().replaceAll("&amp;", "&");
-  }
 
 }
