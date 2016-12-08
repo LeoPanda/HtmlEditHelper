@@ -110,7 +110,7 @@ public class SlideShow extends FunctionPanelBase {
   }
 
   /*
-   * HTML表示後に実行するスクリプト
+   * 実行表示ウィンドウ内に生成ソースを表示した後で追加で実行するスクリプト
    */
   @Override
   public String getExstraHtml() {
