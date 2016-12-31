@@ -16,4 +16,9 @@ public interface TextResources extends ClientBundle {
   @Source("previewHead.txt")
   TextResource previewHead();
 
+  @Source("slideShowScript.html")
+  TextResource slideShowScript();
+  
+  @Source("slideShowButton.html")
+  TextResource slideShowButton();
 }
