@@ -1,6 +1,6 @@
 package jp.leopanda.htmlEditHelper.parts;
 
-import jp.leopanda.htmlEditHelper.enums.LayoutType;
+import jp.leopanda.htmlEditHelper.enums.LayoutTypeElements;
 
 /**
  * レイアウト用入力変数
@@ -9,7 +9,7 @@ import jp.leopanda.htmlEditHelper.enums.LayoutType;
  *
  */
 public class LayoutVariables {
-  public LayoutType layoutType; // レイアウトの種類
+  public LayoutTypeElements layoutType; // レイアウトの種類
   public int indentX;// レイアウト間横インデント
   public int indentY;// レイアウト間縦インデント
   public int defaultIndent; // デフォルトの字下げ
@@ -26,7 +26,7 @@ public class LayoutVariables {
    * @param layoutWidth レイアウト領域の幅
    * @return この変数セット
    */
-  public LayoutVariables setVariables(LayoutType layoutTyle, int indentX, int indentY,
+  public LayoutVariables setVariables(LayoutTypeElements layoutTyle, int indentX, int indentY,
       int defaultIndent, int maxCols, int layoutWidth) {
     this.layoutType = layoutTyle;
     this.indentX = indentX;

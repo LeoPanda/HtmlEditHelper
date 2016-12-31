@@ -32,7 +32,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    * コンストラクタ
    */
   public SyntaxOptionFields() {
-    setUpFields(new ListBoxField("selector", "オプション:", null, SyntaxOption.values()));
+    setUpFields(new ListBoxField("オプション:", null, SyntaxOption.values()));
   }
 
   /*
@@ -89,7 +89,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    * テキスト型オプション値フィールドの作成
    */
   private void setTextOptionField(ValidateBase[] validates) {
-    optionValue = new TextBoxField("optionValue", "", validates);
+    optionValue = new TextBoxField("", validates);
     this.addField(optionValue);
   }
 
@@ -97,7 +97,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    * Boolean型オプション値フィールドの作成
    */
   private void setBooleanOptionField() {
-    optionValue = new ListBoxField("optionValue", "", null, BooleanElement.values());
+    optionValue = new ListBoxField("", null, BooleanElement.values());
     this.addField(optionValue);
   }
 
@@ -106,7 +106,7 @@ public class SyntaxOptionFields extends FieldGroup implements Cloneable {
    */
   private void setNumListOptionField() {
     RegexValidator isNumList = new RegexValidator("\\[[0-9]+[,0-9]+\\]$", "数値をカンマ区切りで入力してください。");
-    optionValue = new TextBoxField("optionValue", "", new ValidateBase[] {isRequired, isNumList});
+    optionValue = new TextBoxField("", new ValidateBase[] {isRequired, isNumList});
     optionValue.setText("[]");
     this.addField(optionValue);
   }

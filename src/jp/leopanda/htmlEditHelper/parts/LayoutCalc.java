@@ -34,8 +34,9 @@ public class LayoutCalc {
    * 
    * @param generateClass String 生成後DIVタグのクラス名
    */
-  public LayoutCalc(String generateClass) {
+  public LayoutCalc(String generateClass,LayoutVariables variables) {
     this.generateClassName = generateClass;
+    this.variables = variables;
   }
 
   /**

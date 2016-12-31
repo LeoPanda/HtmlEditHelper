@@ -5,6 +5,7 @@ import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
+import jp.leopanda.htmlEditHelper.resources.TextResources;
 import jp.leopanda.panelFrame.filedParts.TextAreaField;
 import jp.leopanda.panelFrame.validate.RequiredValidator;
 import jp.leopanda.panelFrame.validate.ValidateBase;
@@ -21,8 +22,8 @@ public class SlideShow extends FunctionPanelBase {
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   // フィールド
-  private TextAreaField imageHtml = new TextAreaField("imageHtml", "画像ソースHTML:",
-      new ValidateBase[] { isRequired });
+  private TextAreaField imageHtml =
+      new TextAreaField("画像ソースHTML:", new ValidateBase[] {isRequired});
 
   /**
    * コンストラクタ
@@ -52,23 +53,14 @@ public class SlideShow extends FunctionPanelBase {
    */
   @Override
   public String getGeneratedHtml() {
-    return getImageDivision() + getButtonHtml() + getJavaScriptUrl() + getOnLoadHtml();
+    return getImgTag(imageHtml.getText()) + getButtonHtml() + getJavaScriptUrl() + getOnLoadHtml();
   }
 
   /*
-   * イメージ指定部を作成する
-   */
-  private String getImageDivision() {
-    String html = "<div id=\"slideShowImages\">" + "\n";
-    html += getImgTag(imageHtml.getText()) + "</div>" + "\n";
-    return html;
-  }
-
-  /*
-   * ソースのHTMLから画像表示タグを抽出する
+   * ソースのHTMLから画像表示タグを抽出しDIVに整形する
    */
   private String getImgTag(String source) {
-    String html = "";
+    String html = "<div id=\"slideShowImages\">" + "\n";
     String regex = "(<a href[^>]*><img[^>]*></a>)";
     RegExp regExp = RegExp.compile(regex, "gm");
     MatchResult matcher = regExp.exec(source);
@@ -76,17 +68,14 @@ public class SlideShow extends FunctionPanelBase {
       html += matcher.getGroup(0);
       matcher = regExp.exec(source);
     }
-    return html;
+    return html + "</div>" + "\n";
   }
 
   /*
    * 停止/再開ボタンHTMLを作成する
    */
   private String getButtonHtml() {
-    String html = "<br/><br/><div style=\"text-align: left;\">" + "\n";
-    html += "<button id=\"slideShowButton\">" + "\n";
-    html += "</button>";
-    return html;
+    return TextResources.INSTANCE.slideShowButton().getText();
 
   }
 
@@ -103,21 +92,7 @@ public class SlideShow extends FunctionPanelBase {
    * ロード後実行部を作成する
    */
   private String getOnLoadHtml() {
-    String html = "<script>" + "\n";
-    html += "window.addEventListener('load', slideShow, false);" + "\n";
-    html += "</script>" + "\n";
-    return html;
-  }
-
-  /*
-   * 実行表示ウィンドウ内に生成ソースを表示した後で追加で実行するスクリプト
-   */
-  @Override
-  public String getExstraHtml() {
-    String html = "<script>" + "\n";
-    html += "slideShow();" + "\n";
-    html += "</script>" + "\n";
-    return html;
+    return TextResources.INSTANCE.slideShowScript().getText();
   }
 
 }

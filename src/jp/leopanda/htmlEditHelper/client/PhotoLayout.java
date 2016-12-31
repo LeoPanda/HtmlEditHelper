@@ -1,13 +1,12 @@
 package jp.leopanda.htmlEditHelper.client;
 
 import com.google.gwt.aria.client.OrientationValue;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
 
 import jp.leopanda.htmlEditHelper.parts.LayoutCalc;
 import jp.leopanda.htmlEditHelper.parts.LayoutVariables;
+import jp.leopanda.htmlEditHelper.parts.SourceFormatter;
 import jp.leopanda.htmlEditHelper.enums.Error;
-import jp.leopanda.htmlEditHelper.enums.LayoutType;
+import jp.leopanda.htmlEditHelper.enums.LayoutTypeElements;
 import jp.leopanda.htmlEditHelper.parts.ErrorListener;
 import jp.leopanda.htmlEditHelper.parts.FunctionPanelBase;
 import jp.leopanda.panelFrame.filedParts.EventAction;
@@ -30,7 +29,6 @@ public class PhotoLayout extends FunctionPanelBase {
   // 生成するDIVタグの諸元
   private static final int DIV_ALIGN = 0;
   private static final String DIV_CLASS = "pc-layout";
-  private LayoutCalc layoutCalc = new LayoutCalc(DIV_CLASS);
   // 画像インデント単位
   private static final String PIC_UNIT = "px";
   // 入力フィールドの初期値
@@ -38,22 +36,20 @@ public class PhotoLayout extends FunctionPanelBase {
   private final int intXIndent = 0;
   private final int intYIndent = 0;
   private final int layoutWidth = 640; // レイアウト領域の幅
-  private LayoutVariables variables = new LayoutVariables();
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   private IntegerValidator isInteger = new IntegerValidator();
   // フィールド
-  private TextAreaField sourceHtml = new TextAreaField("sourceHtml", "ソースHTML:",
-      new ValidateBase[] { isRequired });
-  private ImageRadioButtonField layoutSelector = new ImageRadioButtonField("layoutSelector",
-      "レイアウトの種類", "layoutSelector", LayoutType.values(), OrientationValue.HORIZONTAL);
+  private TextAreaField sourceHtml = new TextAreaField("ソースHTML", new ValidateBase[] {isRequired});
+  private ImageRadioButtonField layoutSelector = new ImageRadioButtonField("レイアウトの種類",
+      "layoutSelector", LayoutTypeElements.values(), OrientationValue.HORIZONTAL);
 
-  private TextBoxField maxCols = new TextBoxField("indent", "カラム数",
-      new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField indentX = new TextBoxField("indent", "横インデント(" + PIC_UNIT + ")",
-      new ValidateBase[] { isRequired, isInteger });
-  private TextBoxField indentY = new TextBoxField("indent", "縦インデント(" + PIC_UNIT + ")",
-      new ValidateBase[] { isRequired, isInteger });
+  private TextBoxField maxCols =
+      new TextBoxField("カラム数", new ValidateBase[] {isRequired, isInteger});
+  private TextBoxField indentX =
+      new TextBoxField("横インデント(" + PIC_UNIT + ")", new ValidateBase[] {isRequired, isInteger});
+  private TextBoxField indentY =
+      new TextBoxField("縦インデント(" + PIC_UNIT + ")", new ValidateBase[] {isRequired, isInteger});
 
   /**
    * コンストラクタ
@@ -97,21 +93,17 @@ public class PhotoLayout extends FunctionPanelBase {
     this.add(indentY);
   }
 
-  // layoutType変更時の処理
-  private void onLayoutTypeChange() {
-    if (layoutSelector.getText() == LayoutType.GRID.getName()) {
-      maxCols.setVisible(true);
-    } else {
-      maxCols.setText(String.valueOf(intMaxCols));
-      maxCols.setVisible(false);
-    }
-  }
 
   /**
-   * HTMLの生成
+   * 写真レイアウト後のHTMLの生成
    */
   @Override
   public String getGeneratedHtml() {
+    LayoutCalc layoutCalc = new LayoutCalc(DIV_CLASS,
+        new LayoutVariables().setVariables(
+            LayoutTypeElements.values()[layoutSelector.getSelectedIndex()],
+            Integer.valueOf(indentX.getText()), Integer.valueOf(indentY.getText()), DIV_ALIGN,
+            Integer.valueOf(maxCols.getText()), layoutWidth));
     layoutCalc.setErrorListener(new ErrorListener() {
       @Override
       // レイアウト生成時のエラーハンドリング
@@ -120,62 +112,26 @@ public class PhotoLayout extends FunctionPanelBase {
         sourceHtml.popError();
       }
     });
-    layoutCalc.setVariables(
-        variables.setVariables(LayoutType.values()[layoutSelector.getSelectedIndex()],
-            Integer.valueOf(indentX.getText()),
-            Integer.valueOf(indentY.getText()),
-            DIV_ALIGN, Integer.valueOf(maxCols.getText()), layoutWidth));
-    return layoutCalc.genLayoutedSource(
-        replaceBr(setImgSourceSize(compressTextDiv(omitWhiteDiv(omitBr(sourceHtml.getText()))))));
+    return layoutCalc.genLayoutedSource(getFormattedSource(sourceHtml.getText()));
   }
 
-  // 対象のDIVとDIVの間にある<br />を削除
-  private String omitBr(String source) {
-    String regex = "</div>[\t\n]*((<br />)[\t\n]*)*<div";
-    return source.replaceAll(regex, "</div><div");
+  // 入力HTMLソースを整形する
+  private String getFormattedSource(String source) {
+    SourceFormatter formatter = new SourceFormatter(source);
+    formatter.omitBr().omitWhiteDiv(TARGET_CLASS).compressTextDiv(TARGET_CLASS)
+        .setImgSourceSize(640).replaceTab2Br();
+    return formatter.getFormattedSource();
   }
 
-  // 空白の対象DIVを削除
-  private String omitWhiteDiv(String source) {
-    String regex = getDivRegex(TARGET_CLASS) + "([\t\n]*((<br />)[\t\n]*)*</div>)";
-    return source.replaceAll(regex, "");
-  }
-
-  // 画像の表示ソースを変更する
-  private String setImgSourceSize(String source) {
-    String regex = "(<img.*src=.*)(/s[0-9]{3}/)(.*/>)";
-    RegExp regExp = RegExp.compile(regex, "gm");
-    regExp.exec(source);
-    source = regExp.replace(source, "$1/s640/$3");
-    return source;
-  }
-
-  // 連続する複数行のテキストタグを１つのタグに集約する（不要なタグをタブ文字に置き換える）
-  private String compressTextDiv(String source) {
-    String regex = getDivRegexSnipet(TARGET_CLASS) + "\">" + "([^<]*)(</div>)";
-    regex = regex + "[\n\t ]*" + regex;
-    RegExp regExp = RegExp.compile(regex, "gm");
-    MatchResult matcher = regExp.exec(source);
-    while (matcher != null) {
-      source = regExp.replace(source, "$1\">$2\t$5$6");
-      matcher = regExp.exec(source);
+  // layoutType変更時の処理
+  private void onLayoutTypeChange() {
+    if (layoutSelector.getText() == LayoutTypeElements.GRID.getName()) {
+      maxCols.setVisible(true);
+    } else {
+      maxCols.setText(String.valueOf(intMaxCols));
+      maxCols.setVisible(false);
     }
-    return source;
   }
 
-  // タブ文字を＜BR＞タグに置き換える
-  private String replaceBr(String source) {
-    return source.replaceAll("\t", "<br />");
-  }
-
-  // 指定classのDIVタグ正規表現パターンを得る
-  private String getDivRegex(String claz) {
-    return "(<div *class=\"" + claz + "\" [^>]*>)";
-  }
-
-  // 指定classDIVタグから行末の">)"を除いた正規表現パターンを得る
-  private String getDivRegexSnipet(String claz) {
-    String source = getDivRegex(claz);
-    return source.substring(0, source.length() - 2) + ")";
-  }
 }
+

@@ -1,5 +1,6 @@
 package jp.leopanda.htmlEditHelper.client;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -22,6 +23,7 @@ import jp.leopanda.htmlEditHelper.resources.TextResources;
 public class MainPanel extends VerticalPanel {
   GeneratedHtmlArea generatedHtmlArea; // 生成されたHTMLを表示するエリア
   FunctionPanel functionPanel; // 機能選択タブパネル
+  JavaScriptObject previewWindow;
 
   /**
    * コンストラクタ
@@ -37,7 +39,7 @@ public class MainPanel extends VerticalPanel {
   }
 
   /*
-   *  選択されたタブパネルの機能を発動しHTMLを生成する
+   * 選択されたタブパネルの機能を発動しHTMLを生成する
    */
   private void generateHtml() {
     FunctionPanelBase selectedPanel = functionPanel.getSelectedPanel().panel;
@@ -48,7 +50,7 @@ public class MainPanel extends VerticalPanel {
   }
 
   /*
-   *  プレビューウィンドウを開く
+   * プレビューウィンドウを開く
    */
   private void showPreview() {
     Panels selectedPanel = functionPanel.getSelectedPanel();
@@ -57,7 +59,7 @@ public class MainPanel extends VerticalPanel {
         new PopPreviewPanel(generatedHtmlArea.getText()).show();
         break;
       case WINDOW:
-        openPreviewWindow(generatedHtmlArea.getText(), selectedPanel.panel.getExstraHtml());
+        openPreviewWindow(generatedHtmlArea.getText());
         break;
       default:
         break;
@@ -65,24 +67,35 @@ public class MainPanel extends VerticalPanel {
   }
 
   /*
-   *  プレビューウィンドウを開く
+   * プレビューウィンドウを開く
    */
-  private void openPreviewWindow(String generatedSource, String extraHtml) {
-    openWindow(TextResources.INSTANCE.previewHead().getText() + generatedSource + extraHtml
-        + "</body></html>");
+  private void openPreviewWindow(String generatedSource) {
+    if (previewWindow != null) {
+      closeWindow(previewWindow);
+    }
+    previewWindow = openWindow(
+        TextResources.INSTANCE.previewHead().getText() + generatedSource + "</body></html>");
   }
 
   /*
-   *  JavaScriptウィンドウを開く
+   * JavaScriptウィンドウを開く
    */
-  private static native void openWindow(String html) /*-{
+  private static native JavaScriptObject openWindow(String html) /*-{
         var newWin = $wnd.open('', 'newWin',
                 'height=800,width=640,left=620,top=150');
         newWin.document.write(html);
+        return newWin;
   }-*/;
 
   /*
-   *  機能選択タブパネル
+   * JavaScriptウィンドゥを閉じる
+   */
+  private static native void closeWindow(JavaScriptObject openedWin) /*-{
+        openedWin.close();
+  }-*/;
+
+  /*
+   * 機能選択タブパネル
    */
   private class FunctionPanel extends TabPanel {
     FunctionPanel() {
@@ -98,30 +111,28 @@ public class MainPanel extends VerticalPanel {
   }
 
   /*
-   *  プレビューパネル
+   * プレビューパネル
    */
   private class PopPreviewPanel extends PopupPanel {
     public PopPreviewPanel(String html) {
       super(true, true);
       this.setPopupPosition(620, 150);
       this.setWidth("680px");
-      this.addStyleName("preview");
       this.setWidget(new HTML(html));
     }
   }
 
   /*
-   *  生HTMLを表示するパネル
+   * 生HTMLを表示するパネル
    */
   private class GeneratedHtmlArea extends TextArea {
     public GeneratedHtmlArea(String text) {
-      this.addStyleName("generatedHTMLArea");
       this.setText(text);
     }
   }
 
   /*
-   *  HTML生成ボタン
+   * HTML生成ボタン
    */
   private class GenerateHtmlButton extends Button {
     public GenerateHtmlButton() {
@@ -136,7 +147,7 @@ public class MainPanel extends VerticalPanel {
   }
 
   /*
-   *  HTML表示エリアの情報をプレビューエリアへ転送するボタン
+   * HTML表示エリアの情報をプレビューエリアへ転送するボタン
    */
   private class RestPreviewButton extends Button {
     public RestPreviewButton() {

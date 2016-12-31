@@ -1,11 +1,4 @@
 /** Add css rules here for your application. */
-
-/** set for radioButton */
-.gwt-Label.layoutSelector {
-    display: none;
-}
-
-/** Example rules used by the template application (remove for your app) */
 h1 {
   font-size: 2em;
   font-weight: bold;
@@ -16,30 +9,9 @@ h1 {
 input {
 		font: 14.5px "ƒƒCƒŠƒI", Meiryo, Verdana, Helvetica, "ƒqƒ‰ƒMƒmŠpƒS Pro W3", "Hiragino Kaku Gothic Pro", "‚l‚r ‚oƒSƒVƒbƒN", sans-serif;
 }
-.sendButton {
-  display: block;
-  font-size: 16pt;
-}
-
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
   width: 400px;
-}
-
-.dialogVPanel {
-  margin: 5px;
-}
-
-.serverResponseLabelError {
-  color: red;
-}
-.warning{
-	background-color:pink;
-}
-.gwt-Label {
-	width: 200px;
-	text-align: right;
-	font: 14.5px "ƒƒCƒŠƒI", Meiryo, Verdana, Helvetica, "ƒqƒ‰ƒMƒmŠpƒS Pro W3", "Hiragino Kaku Gothic Pro", "‚l‚r ‚oƒSƒVƒbƒN", sans-serif;
 }
 .gwt-TextArea {
 padding: 4px;
@@ -50,13 +22,6 @@ font-family: Arial Unicode MS, Arial, sans-serif;
 height: 10;
 width: 580px;
 height: 10em;
-}
-.remarks{
-	text-align:left;
-}
-.numeric{
-	text-align:right;
-	width:35px;
 }
 .post-body {
 margin: 0 0 1.75em;

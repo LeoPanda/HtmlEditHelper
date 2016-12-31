@@ -24,9 +24,9 @@ public class SyntaxHilighterHelper extends FunctionPanelBase {
   // バリデータ
   private RequiredValidator isRequired = new RequiredValidator();
   // フィールド
-  private ListBoxField brush = new ListBoxField("brush", "ソースの種類:", null, SyntaxBrush.values());
-  private ListBoxField css = new ListBoxField("css", "修飾のスタイル:", null, SyntaxCss.values());
-  private TextAreaField src = new TextAreaField("src", "ソース:", new ValidateBase[] { isRequired });
+  private ListBoxField brush = new ListBoxField("ソースの種類:", null, SyntaxBrush.values());
+  private ListBoxField css = new ListBoxField("修飾のスタイル:", null, SyntaxCss.values());
+  private TextAreaField src = new TextAreaField("ソース:", new ValidateBase[] {isRequired});
   private SyntaxOptionFields optionFields = new SyntaxOptionFields();
   private IncrementalWrapper optionPanel; // 可変パネル化ラッパー
 
@@ -110,8 +110,7 @@ public class SyntaxHilighterHelper extends FunctionPanelBase {
    * ソース部を生成する
    */
   private String getSrcHtml() {
-    String html = "<pre class=\"brush: "
-        + brush.getText() + "\" id=\"code\">" + "\n";
+    String html = "<pre class=\"brush: " + brush.getText() + "\" id=\"code\">" + "\n";
     html += src.getText().replace("<", "&lt").replace(">", "&gt") + "\n";
     html += "</pre>" + "\n";
     return html;

@@ -32,14 +32,14 @@ public class IndexIframeHelper extends FunctionPanelBase {
   private RequiredValidator isRequired = new RequiredValidator();
   private NumericValidator isNumeric = new NumericValidator();
   // フィールド
-  private TextBoxField title = new TextBoxField("title", "タイトル名:", null);
-  private TextBoxField caterogy = new TextBoxField("category", "カテゴリ:", null);
-  private TextBoxField queryString = new TextBoxField("queryString", "検索文字列:", null);
-  private ListBoxField numOfWidth = new ListBoxField("numOfWidth", "１行の最大コマ数:", null,
+  private TextBoxField title = new TextBoxField("タイトル名:", null);
+  private TextBoxField caterogy = new TextBoxField("カテゴリ:", null);
+  private TextBoxField queryString = new TextBoxField("検索文字列:", null);
+  private ListBoxField numOfWidth = new ListBoxField("１行の最大コマ数:", null,
       new ElementValue().getSerialNumberElements(MIN_LIST_VAL, MAX_WIDTH));
   private TextBoxField frameWidth =
-      new TextBoxField("iFrameWidth", "iframe横幅:", new ValidateBase[] {isRequired, isNumeric});
-  private ListBoxField frameHight = new ListBoxField("iFrameHight", "iframe高さ:", null,
+      new TextBoxField("iframe横幅:", new ValidateBase[] {isRequired, isNumeric});
+  private ListBoxField frameHight = new ListBoxField("iframe高さ:", null,
       new ElementValue().getSerialNumberElements(MIN_LIST_VAL, MAX_IFRAME_HEIGHT));
 
   /**

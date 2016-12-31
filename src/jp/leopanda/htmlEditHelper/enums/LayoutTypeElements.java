@@ -7,17 +7,18 @@ import jp.leopanda.htmlEditHelper.resources.LayoutImage;
 import jp.leopanda.panelFrame.filedParts.ListImageElement;
 
 /**
+ * 写真レイアウトの配置選択肢
  * @author LeoPanda
  *
  */
-public enum LayoutType implements ListImageElement {
+public enum LayoutTypeElements implements ListImageElement {
   GRID("グリッド", LayoutImage.INSTANCE.grid()),
   VHCOMBINE("縦＋横列", LayoutImage.INSTANCE.lcombine()),
   HVCOMBINE("横列＋縦", LayoutImage.INSTANCE.rcombine());
   public String text;
   public Image image;
 
-  LayoutType(String text, ImageResource imgResource) {
+  LayoutTypeElements(String text, ImageResource imgResource) {
     this.text = text;
     this.image = new Image(imgResource);
   }
